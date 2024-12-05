@@ -1,0 +1,77 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  background-color: rgb(71, 119, 119); /* Apply the background color here */
+}
+
+#root {
+  display: flex;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: inherit;
+  justify-content: center;
+}
+
+.home-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.welcome-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 600px;
+  height: 350px;
+  border-radius: 20px;
+  background-color: rgb(146, 202, 202);
+}
+
+.box1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 350px;
+  border-radius: 20px;
+  background-color: rgb(184, 209, 123);
+}
+
+.box {
+  width: 300px;
+  height: 300px;
+  border: 2px solid rgba(255, 255, 255, 0.87);
+  border-radius: 20px;
+  background-color: white;
+  color: black;
+}
+
+.book-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.book-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: black;
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+}
