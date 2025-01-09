@@ -1,11 +1,55 @@
-import Books from "./pages/Books";
-/* import Home from "./pages/Home"; */
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Outlet,
+  Route,
+  RouterProvider,
+} from "react-router";
+import Home from "./pages/Home";
 import "./styles/main.css";
+import Profile from "./pages/Profile";
+import Register from "./pages/Register";
+import Navigation from "./components/Navigation";
+import Login from "./pages/Login";
+import useUserStatus from "./hooks/useUserStatus";
+import { useEffect } from "react";
+import Listings from "./pages/Listings";
 
-function App() {
+const Root = () => {
   return (
     <>
-      <Books />
+      <Navigation />
+      <Outlet />
+    </>
+  );
+};
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Root />}>
+      <Route index element={<Home />} />
+      <Route path="listings" element={<Listings />} />
+      <Route path="register" element={<Register />} />
+      <Route path="login" element={<Login />} />
+      <Route path="profile" element={<Profile />} />
+    </Route>
+  )
+);
+
+function App() {
+  const isUserLoggedIn = useUserStatus();
+
+  useEffect(() => {
+    if (isUserLoggedIn === "logged in") {
+      console.log("User is logged in");
+    } else {
+      console.log("User is not logged in");
+    }
+  }, [isUserLoggedIn]);
+
+  return (
+    <>
+      <RouterProvider router={router} />
     </>
   );
 }
