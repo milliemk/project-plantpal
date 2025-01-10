@@ -141,19 +141,61 @@ h6 {
 }
 
 .new-listings {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+}
+
+.new-listings-title {
+  margin-top: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+
+.hero-image {
+  width: 100%;
+  height: 7rem;
+  object-fit: cover;
+  padding: 0;
+  opacity: 0.9;
+}
+
+.hero-image-title {
+  width: 100%;
+  height: 3rem;
+  object-fit: cover;
+  padding: 0;
+}
+
+.new-listings:hover {
+  & .hero-image {
+    opacity: 1;
+    filter: blur(5px);
+    filter: brightness(0.4);
+  }
+  cursor: pointer;
+  & .hero-text {
+    font-family: "Roboto Slab";
+    visibility: visible;
+    font-weight: 700;
+    color: white;
+    font-size: x-large;
+    width: 100%;
+  }
+}
+
+.hero-text {
+  visibility: hidden;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centers the text exactly */
+  color: rgb(36, 35, 35);
+  font-size: 1.2rem;
+  font-weight: 400;
+  padding: 0.5rem;
 }
 
 .list-title {
   margin-top: 0.8rem;
-}
-
-.new-listings p {
-  padding: 0.8rem;
-  margin: 0;
-  font-weight: 600;
-  color: black;
 }
 
 /* Listing */

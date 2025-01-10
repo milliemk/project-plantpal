@@ -1,73 +1,52 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./components.scss";
 import { Button, Form } from "react-bootstrap";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { LoggedInUser, LoginOkResponse } from "../types/customTypes";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../Context/AuthContext";
+import { useNavigate } from "react-router";
 
 function LoginComponent() {
-  const [LoggedInUser, setLoggedInUser] = useState<LoggedInUser | null>(null);
-  const [userCredentials, setUserCredentials] = useState({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  type FormControlElement =
-    | HTMLInputElement
-    | HTMLTextAreaElement
-    | HTMLSelectElement;
+  const { login, user } = useContext(AuthContext);
 
-  const handleLoginChange = (e: ChangeEvent<FormControlElement>) => {
-    setUserCredentials({
-      ...userCredentials!,
-      [e.target.name]: e.target.value,
-    });
+  //redirect after login
+  const navigateTo = useNavigate();
+  const redirectToProfilePage = () => {
+    navigateTo("/profile");
   };
 
-  const handleLoginSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  //handle emailchange
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  //handle passwordchange
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const handleLoginClick = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    const urlencoded = new URLSearchParams();
-
-    if (userCredentials) {
-      urlencoded.append("email", userCredentials.email);
-      urlencoded.append("password", userCredentials.password);
-    }
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-    };
-
+    e.preventDefault();
     try {
-      const response = await fetch(
-        "http://localhost:5001/api/user/login",
-        requestOptions
-      );
-      const result = (await response.json()) as LoginOkResponse;
-      console.log("result :>> ", result);
-      if (result.token) {
-        // store in local storage if there is a token
-        localStorage.setItem("token", result.token);
-        // set user (probably in auth context) in the user info
-        setLoggedInUser(result.user);
-      }
-
-      if (!result.token) {
-        throw new Error("No token, try to log in again");
-      }
+      await login(email, password);
+      console.log("user logged in");
     } catch (error) {
-      console.log("error :>> ", error);
+      console.log("Error during login:", error);
     }
   };
+
+  useEffect(() => {
+    if (user) redirectToProfilePage();
+  }, [user]);
 
   return (
     <div>
       <Form
         className="register-form poppins-regular"
-        onSubmit={handleLoginSubmit}
+        onSubmit={handleLoginClick}
       >
         <h3 className="register-title">Login</h3>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -76,8 +55,8 @@ function LoginComponent() {
             name="email"
             type="email"
             placeholder="Enter email"
-            value={userCredentials.email}
-            onChange={handleLoginChange}
+            value={email}
+            onChange={handleEmailChange}
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -86,8 +65,8 @@ function LoginComponent() {
             name="password"
             type="password"
             placeholder="Password"
-            value={userCredentials.password}
-            onChange={handleLoginChange}
+            value={password}
+            onChange={handlePasswordChange}
           />
         </Form.Group>
         <Button

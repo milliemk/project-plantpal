@@ -40,7 +40,7 @@ export type Token = string;
 
 export type LoggedInUser = {
   email: string;
-  password?: string;
+  password: string;
   avatar?: string;
 };
 

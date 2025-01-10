@@ -11,9 +11,8 @@ import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import Navigation from "./components/Navigation";
 import Login from "./pages/Login";
-import useUserStatus from "./hooks/useUserStatus";
-import { useEffect } from "react";
 import Listings from "./pages/Listings";
+import { AuthContextProvider } from "./Context/AuthContext";
 
 const Root = () => {
   return (
@@ -37,19 +36,11 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  const isUserLoggedIn = useUserStatus();
-
-  useEffect(() => {
-    if (isUserLoggedIn === "logged in") {
-      console.log("User is logged in");
-    } else {
-      console.log("User is not logged in");
-    }
-  }, [isUserLoggedIn]);
-
   return (
     <>
-      <RouterProvider router={router} />
+      <AuthContextProvider>
+        <RouterProvider router={router} />
+      </AuthContextProvider>
     </>
   );
 }

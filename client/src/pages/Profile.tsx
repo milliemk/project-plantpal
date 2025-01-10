@@ -1,10 +1,12 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { GetProfileOkResponse, User } from "../types/customTypes";
-import { Button } from "react-bootstrap";
+import ProfileComponent from "../components/ProfileComponent";
+import ShowFileInput from "../components/ShowFileInput";
 
 export default function Profile() {
   const [selectedFile, setSelectedFile] = useState<File | string>("");
   const [userProfile, setUserProfile] = useState<User | null>(null);
+  const [showInput, setShowInput] = useState(false);
 
   // get profile
   const handleGetProfile = async () => {
@@ -93,6 +95,11 @@ export default function Profile() {
     }
   };
 
+  const handleShowFileInput = (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setShowInput(true);
+  };
+
   useEffect(() => {
     handleGetProfile();
   }, []);
@@ -101,22 +108,18 @@ export default function Profile() {
     <div className="profile-container">
       <div>
         <hr />
-        {userProfile && userProfile.avatar ? (
-          <img src={userProfile.avatar.secureUrl} alt="image" />
-        ) : null}
         <div>
-          <br />
-          <form onSubmit={handleImageSubmit}>
-            <input
-              type="file"
-              name="avatar"
-              id="avatar"
-              onChange={handleAttachImage}
-              accept="image/png, image/jpg, image/jpeg"
-            />
-            <button>Upload Image</button>
-          </form>
+          {userProfile && userProfile.avatar ? (
+            <img src={userProfile.avatar.secureUrl} alt="image" />
+          ) : null}
         </div>
+        <ShowFileInput handleShowFileInput={handleShowFileInput} />
+        {showInput ? (
+          <ProfileComponent
+            handleAttachImage={handleAttachImage}
+            handleImageSubmit={handleImageSubmit}
+          />
+        ) : null}
         <hr />
         {userProfile ? (
           <div className="user-info">

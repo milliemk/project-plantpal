@@ -1,61 +1,52 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./components.scss";
 import { Button, Form } from "react-bootstrap";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { User } from "../types/customTypes";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../Context/AuthContext";
+import { useNavigate } from "react-router";
 
 function RegisterComponent() {
-  const [newUser, setNewUser] = useState<User | null>(null);
-  type FormControlElement =
-    | HTMLInputElement
-    | HTMLTextAreaElement
-    | HTMLSelectElement;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleRegisterChange = (e: ChangeEvent<FormControlElement>) => {
-    setNewUser({ ...newUser!, [e.target.name]: e.target.value });
+  const { register, user } = useContext(AuthContext);
+
+  const navigateTo = useNavigate();
+  const redirectToLoginPage = () => {
+    navigateTo("/login");
   };
 
-  const handleRegisterSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  //handle emailchange
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  // handle passwordchange
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  //handle registerclick
+  const handleRegisterClick = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    const urlencoded = new URLSearchParams();
-
-    if (newUser) {
-      urlencoded.append("email", newUser.email);
-      urlencoded.append("password", newUser.password);
-    }
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-    };
-
     try {
-      const response = await fetch(
-        "http://localhost:5001/api/user/register",
-        requestOptions
-      );
-
-      if (!response.ok) {
-        throw new Error("Something went wrong in the response");
-      }
-      if (response.ok) {
-        const result = await response.json();
-        console.log("result :>> ", result);
-      }
+      await register(email, password);
     } catch (error) {
-      console.log("error :>> ", error);
+      console.log("Error during login:", error);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      redirectToLoginPage();
+    }
+  }, [user]);
 
   return (
     <div>
       <Form
         className="register-form poppins-regular"
-        onSubmit={handleRegisterSubmit}
+        onSubmit={handleRegisterClick}
       >
         <h3 className="register-title">Register</h3>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -64,7 +55,8 @@ function RegisterComponent() {
             name="email"
             type="email"
             placeholder="Enter email"
-            onChange={handleRegisterChange}
+            value={email}
+            onChange={handleEmailChange}
           />
         </Form.Group>
 
@@ -74,7 +66,8 @@ function RegisterComponent() {
             name="password"
             type="password"
             placeholder="Password"
-            onChange={handleRegisterChange}
+            value={password}
+            onChange={handlePasswordChange}
           />
         </Form.Group>
         <Button

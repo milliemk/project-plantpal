@@ -87,9 +87,8 @@ function Listings() {
                     style={{ fontWeight: "bolder" }}
                   >
                     {listing.seller}:
-                    <p className="listing-description">{listing.description}</p>
                   </p>
-
+                  <p className="listing-description">{listing.description}</p>
                   <CareModal
                     light={listing.light}
                     water={listing.water}

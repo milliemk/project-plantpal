@@ -2,18 +2,23 @@ import { Button, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./components.scss";
 import { NavLink } from "react-router";
-import useUserStatus from "../hooks/useUserStatus";
+import { AuthContext } from "../Context/AuthContext";
+import { useContext } from "react";
 
 function Navigation() {
-  const IsUserLoggedIn = useUserStatus();
-  const logut = () => {
-    localStorage.removeItem("token");
+  const { logout, isAuthenticated } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    console.log("user logged out");
   };
 
   return (
     <div className="navigation">
-      {IsUserLoggedIn === "logged in" ? (
-        <Button onClick={logut}>Log out</Button>
+      {isAuthenticated ? (
+        <Button className="logout-button" onClick={handleLogout}>
+          Log out
+        </Button>
       ) : null}
 
       <Dropdown drop="down-centered">
