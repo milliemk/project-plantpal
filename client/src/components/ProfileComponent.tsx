@@ -13,7 +13,7 @@ function ProfileComponent({
 }: ProfileProps) {
   return (
     <div>
-      <Form.Group className="mb-3" onSubmit={handleImageSubmit}>
+      <form className="mb-3" onSubmit={handleImageSubmit}>
         <Form.Control
           type="file"
           name="avatar"
@@ -22,8 +22,10 @@ function ProfileComponent({
           accept="image/png, image/jpg, image/jpeg"
         />
         <br />
-        <Button className="avatar-button">Attach Image</Button>
-      </Form.Group>
+        <Button type="submit" className="avatar-button">
+          Attach Image
+        </Button>
+      </form>
     </div>
   );
 }

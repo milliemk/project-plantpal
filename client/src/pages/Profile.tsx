@@ -64,6 +64,7 @@ export default function Profile() {
   // Upload image
   const handleImageSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("Form submitted!");
     const token = localStorage.getItem("token");
     const formdata = new FormData();
     formdata.append("avatar", selectedFile);
@@ -87,8 +88,7 @@ export default function Profile() {
         const result = await response.json();
         console.log("result :>> ", result);
         handleGetProfile();
-        console.log("result.avatar.secureUrl :>> ", result.avatar.secureUrl);
-        console.log("userProfile :>> ", userProfile);
+        setShowInput(false);
       }
     } catch (error) {
       console.log("error :>> ", error);
@@ -113,6 +113,7 @@ export default function Profile() {
             <img src={userProfile.avatar.secureUrl} alt="image" />
           ) : null}
         </div>
+        <br />
         <ShowFileInput handleShowFileInput={handleShowFileInput} />
         {showInput ? (
           <ProfileComponent
@@ -123,8 +124,13 @@ export default function Profile() {
         <hr />
         {userProfile ? (
           <div className="user-info">
-            <p>Name: Millie</p>
-            <p>Email: {userProfile.email}</p>
+            <p>
+              Username:{" "}
+              <span className="profile-data">{userProfile.username}</span>{" "}
+            </p>
+            <p>
+              Email: <span className="profile-data">{userProfile.email}</span>
+            </p>
           </div>
         ) : (
           <p>No user profile found.</p>

@@ -15,6 +15,7 @@ export type Listing = {
 };
 
 export type User = {
+  username: string;
   email: string;
   password: string;
   avatar?: Avatar;
@@ -29,7 +30,7 @@ export type LoginOkResponse = {
   message: string;
   user: {
     email: string;
-    userName: string;
+    username: string;
     avatar: string;
   };
   token: Token;

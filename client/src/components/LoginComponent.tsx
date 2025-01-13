@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./components.scss";
 import { Button, Form } from "react-bootstrap";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import { useNavigate } from "react-router";
 
@@ -33,14 +33,11 @@ function LoginComponent() {
     try {
       await login(email, password);
       console.log("user logged in");
+      redirectToProfilePage();
     } catch (error) {
       console.log("Error during login:", error);
     }
   };
-
-  useEffect(() => {
-    if (user) redirectToProfilePage();
-  }, [user]);
 
   return (
     <div>

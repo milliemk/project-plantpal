@@ -1,13 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./components.scss";
 import { Button, Form } from "react-bootstrap";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import { useNavigate } from "react-router";
 
 function RegisterComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
 
   const { register, user } = useContext(AuthContext);
 
@@ -26,21 +27,22 @@ function RegisterComponent() {
     setPassword(e.target.value);
   };
 
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
   //handle registerclick
   const handleRegisterClick = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
-      await register(email, password);
+      await register(username, email, password);
+
+      redirectToLoginPage();
     } catch (error) {
       console.log("Error during login:", error);
     }
   };
-
-  useEffect(() => {
-    if (user) {
-      redirectToLoginPage();
-    }
-  }, [user]);
 
   return (
     <div>
@@ -49,6 +51,16 @@ function RegisterComponent() {
         onSubmit={handleRegisterClick}
       >
         <h3 className="register-title">Register</h3>
+        <Form.Group className="mb-3" controlId="formBasicUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            name="name"
+            type="name"
+            placeholder="Enter username"
+            value={username}
+            onChange={handleUsernameChange}
+          />
+        </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control

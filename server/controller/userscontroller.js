@@ -65,44 +65,58 @@ const avatarUpload = async (req, res) => {
 // REGISTER
 const register = async (req, res) => {
   console.log("req.body", req.body);
-  const { email, password } = req.body;
-  // don't forget input validation
+  const { avatar, username, email, password } = req.body;
 
-  // check if user already exists in database
+  // Check if email already exists
+  const existingEmail = await UserModel.findOne({ email });
+  if (existingEmail) {
+    return res.status(400).json({
+      message: "Sorry, this email is already in use.",
+    });
+  }
+
+  // Check if username already exists
+  const existingUsername = await UserModel.findOne({ username });
+  if (existingUsername) {
+    return res.status(400).json({
+      message: "Sorry, this username is already taken.",
+    });
+  }
 
   try {
-    const existingUser = await UserModel.findOne({ email: email });
-    if (existingUser) {
-      return res.status(400).json({
-        message: "sorry, email already in use",
+    // Hash the password
+    const hashedPassword = await encryptPassword(password);
+    if (!hashedPassword) {
+      return res.status(500).json({
+        error: "Sorry, something went wrong. Please try again later.",
       });
     }
-    if (!existingUser) {
-      // hash password
-      const hashedPassword = await encryptPassword(password);
 
-      if (!hashedPassword) {
-        return res.status(500).json({
-          error: "sorry try again later",
-        });
-      }
+    const defaultAvatar = {
+      secureUrl:
+        "https://res.cloudinary.com/dlnlrqxed/image/upload/v1736770729/plant-app/b3nhz8em379pzqthtgwi.jpg",
+      publicId: "default",
+    };
+    const userAvatar = avatar || defaultAvatar;
 
-      if (hashedPassword) {
-        const newUser = new UserModel({
-          email: email,
-          password: hashedPassword,
-        });
+    // Create a new user
+    const newUser = new UserModel({
+      username,
+      email,
+      password: hashedPassword,
+      avatar: userAvatar,
+    });
 
-        const storedUser = await newUser.save();
-        return res.status(201).json({
-          message: "registration successful",
-          user: storedUser,
-        });
-      }
-    }
+    const storedUser = await newUser.save();
+
+    // Return success response
+    return res.status(201).json({
+      message: "Registration successful",
+      user: storedUser,
+    });
   } catch (error) {
     return res.status(500).json({
-      error: "registration failed",
+      error: "Registration failed. Please try again later.",
     });
   }
 };
@@ -151,7 +165,9 @@ const login = async (req, res) => {
           return res.status(200).json({
             message: "user successfully logged in",
             user: {
+              username: existingUser.username,
               email: existingUser.email,
+              avatar: existingUser.avatar || defaultAvatar,
             },
             token,
           });
@@ -170,6 +186,7 @@ const getProfile = async (req, res) => {
 
   return res.status(200).json({
     userProfile: {
+      username: req.user.username,
       email: req.user.email,
       avatar: req.user.avatar,
     },

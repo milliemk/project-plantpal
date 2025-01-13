@@ -10,7 +10,11 @@ type AuthContextProviderProps = {
 type AuthContextType = {
   user: User | null;
   isAuthenticated: boolean;
-  register: (email: string, password: string) => Promise<void>;
+  register: (
+    username: string,
+    email: string,
+    password: string
+  ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   checkUserStatus: () => void;
   logout: () => void;
@@ -37,12 +41,18 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const token = localStorage.getItem("token");
 
-  const register = async (email: string, password: string) => {
+  const urlencoded = new URLSearchParams();
+
+  const register = async (
+    username: string,
+    email: string,
+    password: string
+  ) => {
     try {
       const response = await fetch("http://localhost:5001/api/user/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, email, password }),
       });
 
       if (!response.ok) throw new Error("Registration failed");
@@ -68,9 +78,11 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       }
 
       const result = await response.json();
+
       localStorage.setItem("token", result.token);
       setUser(result.user);
       setIsAuthenticated(true);
+      console.log("user :>> ", result.user);
     } catch (error) {
       console.error("Error during login:", error);
     }
@@ -82,27 +94,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     } else {
       setIsAuthenticated(false);
     }
-    /*  if (token) {
-      try {
-        const response = await fetch("http://localhost:5001/api/login/status", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) throw new Error("Failed to fetch user status");
-
-        const result = await response.json();
-        setUser(result.user);
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error("Error checking user status:", error);
-        setIsAuthenticated(false);
-      }
-    } else {
-      setIsAuthenticated(false);
-    } */
   };
 
   const logout = () => {

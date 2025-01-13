@@ -294,3 +294,7 @@ h6 {
   padding: 1rem;
   text-align: start;
 }
+
+.profile-data {
+  color: rgb(71, 119, 119);
+}

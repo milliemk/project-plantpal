@@ -1,15 +1,21 @@
 import { Button, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./components.scss";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
 import { useContext } from "react";
 
 function Navigation() {
   const { logout, isAuthenticated } = useContext(AuthContext);
 
+  const navigateTo = useNavigate();
+  const redirectToProfilePage = () => {
+    navigateTo("/");
+  };
+
   const handleLogout = () => {
     logout();
+    redirectToProfilePage();
     console.log("user logged out");
   };
 
