@@ -21,6 +21,7 @@ const userSchema = mongoose.Schema(
       secureUrl: { type: String, required: false },
       publicId: { type: String, required: false },
     },
+    postedListings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Listing" }],
   },
   {
     timeStamps: {

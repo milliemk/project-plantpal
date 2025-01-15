@@ -41,8 +41,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const token = localStorage.getItem("token");
 
-  const urlencoded = new URLSearchParams();
-
   const register = async (
     username: string,
     email: string,

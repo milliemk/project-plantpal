@@ -167,8 +167,8 @@ h6 {
 .new-listings:hover {
   & .hero-image {
     opacity: 1;
-    filter: blur(5px);
-    filter: brightness(0.4);
+
+    filter: sepia(40%) saturate(200%) brightness(45%) hue-rotate(111deg);
   }
   cursor: pointer;
   & .hero-text {
@@ -255,6 +255,10 @@ h6 {
   gap: 0.5rem;
   color: rgb(89, 87, 87);
   padding: 0;
+}
+
+.quick-info p {
+  font-size: 13.5px;
 }
 
 .swap-title {

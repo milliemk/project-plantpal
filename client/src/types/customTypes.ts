@@ -5,13 +5,19 @@ export type Listing = {
   condition: string;
   delivery: string;
   description: string;
-  images: string[];
+  images: Image[];
   light: string;
-  price: string;
+  price: number;
   species: string;
   water: string;
   location: string;
   soil: string;
+  swapfor: string;
+};
+
+export type Image = {
+  secure_url: string;
+  publicId: string;
 };
 
 export type User = {

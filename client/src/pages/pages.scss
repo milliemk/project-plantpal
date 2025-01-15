@@ -1,0 +1,54 @@
+.submit-button {
+  border: 2px solid rgb(146, 202, 202);
+  color: rgb(255, 255, 255);
+  background-color: rgb(146, 202, 202);
+  font-family: "Roboto Slab";
+  &:hover,
+  &:focus,
+  &:active,
+  &:target {
+    background-color: rgb(146, 202, 202);
+    color: #fff;
+    border: 2px solid rgb(146, 202, 202);
+  }
+}
+
+.new-form {
+  background-color: white;
+}
+
+.new-listing-title {
+  color: white;
+}
+
+.remove-button {
+  border: none;
+  color: rgb(226, 85, 85);
+  background-color: transparent;
+  font-family: "Roboto Slab";
+  font-size: large;
+  &:hover,
+  &:focus,
+  &:active,
+  &:target {
+    background-color: transparent;
+    color: rgb(71, 119, 119);
+  }
+}
+
+.confirm-photos-button {
+  align-self: center;
+  border: 2px solid rgb(184, 209, 123);
+  color: rgb(255, 255, 255);
+  background-color: rgb(184, 209, 123);
+  font-family: "Roboto Slab";
+  width: 50%;
+  &:hover,
+  &:focus,
+  &:active,
+  &:target {
+    background-color: rgb(184, 209, 123);
+    color: #fff;
+    border: 2px solid rgb(184, 209, 123);
+  }
+}

@@ -28,14 +28,18 @@ function Navigation() {
       ) : null}
 
       <Dropdown drop="down-centered">
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
+        <Dropdown.Toggle
+          className="dropdown-toggle-nav"
+          variant="success"
+          id="dropdown-basic"
+        >
           <span className="material-symbols-outlined menu-symbol">menu</span>
         </Dropdown.Toggle>
-        <Dropdown.Menu className="dropdown-menu">
+        <Dropdown.Menu className="dropdown-menu-nav">
           <Dropdown.Item as={NavLink} to="/">
             Home
           </Dropdown.Item>
-          <Dropdown.Item as={NavLink} to="listings">
+          <Dropdown.Item as={NavLink} to="/listings">
             Plants
           </Dropdown.Item>
           <Dropdown.Item as={NavLink} to="/register">

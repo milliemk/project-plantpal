@@ -22,17 +22,19 @@ const listingsSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  images: {
-    type: Array,
-    require: true,
-  },
+  images: [
+    {
+      secure_url: { type: String, required: true },
+      public_id: { type: String, required: true },
+    },
+  ],
   location: {
     type: String,
     require: true,
   },
   price: {
     type: String,
-    require: true,
+    require: false,
   },
   soil: {
     type: String,
@@ -49,6 +51,10 @@ const listingsSchema = new mongoose.Schema({
   water: {
     type: String,
     require: true,
+  },
+  swapfor: {
+    type: String,
+    require: false,
   },
 });
 

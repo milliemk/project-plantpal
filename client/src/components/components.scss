@@ -23,7 +23,7 @@ body {
   }
 }
 
-.dropdown-toggle {
+.dropdown-toggle-nav {
   position: fixed;
   top: 3%;
   right: 3%;
@@ -36,16 +36,16 @@ body {
   height: 4rem;
 }
 
-.dropdown-toggle:focus {
+.dropdown-toggle-nav:focus {
   outline: transparent;
 }
 
-.dropdown-toggle:hover {
+.dropdown-toggle-nav:hover {
   outline: transparent;
   border: 0;
 }
 
-.dropdown-menu {
+.dropdown-menu-nav {
   text-align: center;
   font-size: large;
   min-width: 100px;
@@ -106,6 +106,38 @@ body {
   }
 }
 
+.new-plant-button {
+  border: 2px solid rgb(146, 202, 202);
+  color: rgb(255, 255, 255);
+  background-color: rgb(146, 202, 202);
+  font-size: large;
+  font-family: "Roboto Slab";
+  margin-bottom: 2rem;
+  &:hover,
+  &:focus,
+  &:active,
+  &:target {
+    background-color: rgb(146, 202, 202);
+    color: #fff;
+    border: 2px solid rgb(146, 202, 202);
+  }
+}
+
+.submit-button {
+  border: 2px solid rgb(146, 202, 202);
+  color: rgb(255, 255, 255);
+  background-color: rgb(146, 202, 202);
+  font-family: "Roboto Slab";
+  &:hover,
+  &:focus,
+  &:active,
+  &:target {
+    background-color: rgb(146, 202, 202);
+    color: #fff;
+    border: 2px solid rgb(146, 202, 202);
+  }
+}
+
 .care-modal {
   position: fixed;
   top: 50%;
@@ -140,6 +172,8 @@ body {
   &:active,
   &:target {
     color: rgb(71, 119, 119);
+    opacity: 0.7;
+    border-bottom: 2px solid rgb(71, 119, 119);
     background-color: transparent;
   }
 }
@@ -224,4 +258,55 @@ body {
   width: 375px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+}
+
+.new-form {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 20px;
+}
+
+.new-post-modal {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25rem;
+  height: 33rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  color: white;
+  font-family: "Poppins";
+}
+
+.new-post-header {
+  background-color: rgb(71, 119, 119);
+}
+
+.new-post-modal-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 1.2rem;
+}
+
+.new-post-modal-title {
+  font-size: 22px;
+  font-weight: 300;
+}
+
+.redirect-new-post-button {
+  border: transparent;
+  color: rgb(71, 119, 119);
+  background-color: transparent;
+  font-family: "Poppins";
+  font-size: 15px;
+  &:hover,
+  &:focus,
+  &:active,
+  &:target {
+    color: rgb(71, 119, 119);
+    background-color: transparent;
+    border-bottom: 2px solid rgb(71, 119, 119);
+  }
 }

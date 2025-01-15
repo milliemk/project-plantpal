@@ -15,7 +15,8 @@ const fileFilter = (req, file, cb) => {
   if (
     fileExtension !== ".jpeg" &&
     fileExtension !== ".jpg" &&
-    fileExtension !== ".png"
+    fileExtension !== ".png" &&
+    fileExtension !== ".webp"
   ) {
     console.log("file not supported", fileExtension);
     // To reject this file pass `false`, like so:

@@ -60,12 +60,12 @@ function Home() {
               </div>
               {listings &&
                 listings.map((listing) => {
-                  if (listing.deal === "Swap")
+                  if (listing.deal === "swap")
                     return (
                       <div key={listing._id} className="new-listings">
                         <img
                           className="hero-image"
-                          src={listing.images[0]}
+                          src={listing.images[0].secure_url}
                           alt="Plant Image"
                         />
                         <p className="hero-text">{listing.species}</p>
@@ -81,12 +81,12 @@ function Home() {
               </div>
               {listings &&
                 listings.map((listing) => {
-                  if (listing.deal === "Sale")
+                  if (listing.deal === "sale")
                     return (
                       <div key={listing._id} className="new-listings">
                         <img
                           className="hero-image"
-                          src={listing.images[0]}
+                          src={listing.images[0].secure_url}
                           alt="Plant Image"
                         />
                         <p className="hero-text">{listing.species}</p>
@@ -104,12 +104,12 @@ function Home() {
               </div>
               {listings &&
                 listings.map((listing) => {
-                  if (listing.deal === "Giveaway")
+                  if (listing.deal === "giveaway")
                     return (
                       <div key={listing._id} className="new-listings">
                         <img
                           className="hero-image"
-                          src={listing.images[0]}
+                          src={listing.images[0].secure_url}
                           alt="Plant Image"
                         />
                         <p className="hero-text">{listing.species}</p>
