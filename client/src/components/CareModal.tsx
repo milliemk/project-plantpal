@@ -20,7 +20,6 @@ function CareModal({ light, water, soil }: careModalProps) {
       <Button className="modal-button" onClick={handleShow}>
         Care Guide
       </Button>
-      <Button className="seller-button">Send a DM</Button>
 
       <Modal className="care-modal" show={show} onHide={handleClose}>
         <Modal.Header closeButton>

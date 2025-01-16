@@ -19,7 +19,7 @@ function ProfileComponent({
           name="avatar"
           id="avatar"
           onChange={handleAttachImage}
-          accept="image/png, image/jpg, image/jpeg"
+          accept="image/png, image/jpg, image/jpeg, image/webp"
         />
         <br />
         <Button type="submit" className="avatar-button">

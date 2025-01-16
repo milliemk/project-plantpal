@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getAllListings,
+  getListingsByDeal,
   postNewListing,
 } from "../controller/listingsController.js";
 import multerUpload from "../middlewares/multer.js";
@@ -13,8 +14,10 @@ listingsRouter.get("/", getAllListings);
 listingsRouter.post(
   "/uploadListing",
   jwtAuth,
-  multerUpload.single("images"),
+  multerUpload.array("images", 2),
   postNewListing
 );
+
+listingsRouter.get("/:deal", getListingsByDeal);
 
 export default listingsRouter;

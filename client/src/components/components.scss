@@ -107,9 +107,9 @@ body {
 }
 
 .new-plant-button {
-  border: 2px solid rgb(146, 202, 202);
+  border: 2px solid rgb(89, 128, 128);
   color: rgb(255, 255, 255);
-  background-color: rgb(146, 202, 202);
+  background-color: rgb(89, 128, 128);
   font-size: large;
   font-family: "Roboto Slab";
   margin-bottom: 2rem;
@@ -309,4 +309,102 @@ body {
     background-color: transparent;
     border-bottom: 2px solid rgb(71, 119, 119);
   }
+}
+
+.DM-modal {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  width: 30rem;
+  height: 33rem;
+  transform: translate(-50%, -50%);
+  color: rgb(0, 0, 0);
+  font-family: "Poppins";
+}
+
+.DM-modal-header {
+  background-color: rgb(71, 119, 119);
+  padding: 0.5rem;
+}
+
+.send-button {
+  border: transparent;
+  color: rgb(71, 119, 119);
+  background-color: transparent;
+  font-family: "Poppins";
+  font-size: 15px;
+  &:hover,
+  &:focus,
+  &:active,
+  &:target {
+    color: rgb(71, 119, 119);
+    background-color: transparent;
+    border-bottom: 2px solid rgb(71, 119, 119);
+  }
+}
+
+/* .message-box {
+  height: 200px;
+}
+ */
+
+.white {
+  color: white;
+  font-size: 30px;
+  padding: 0;
+}
+
+.seller-info-button {
+  border: transparent;
+  color: rgb(71, 119, 119);
+  background-color: transparent;
+  font-family: "Poppins";
+  font-size: 15px;
+  font-weight: 700;
+  &:hover,
+  &:focus,
+  &:active,
+  &:target {
+    color: rgb(71, 119, 119);
+    background-color: transparent;
+    opacity: 0.8;
+  }
+}
+
+.Seller-modal-header {
+  background-color: rgb(71, 119, 119);
+  padding: 0.5rem;
+  color: white;
+}
+
+.seller-mod {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.seller-title {
+  font-size: larger;
+}
+
+.seller-modal {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  width: 40rem;
+  height: 33rem;
+  transform: translate(-50%, -50%);
+  color: rgb(0, 0, 0);
+  font-family: "Poppins";
+}
+
+.info-box-seller p {
+  margin-bottom: 0.7rem;
+}
+
+.avatar-info-box {
+  object-fit: cover;
+  border-radius: 20px;
+  border: 2px solid rgb(71, 119, 119);
 }

@@ -3,18 +3,16 @@ import "./components.scss";
 import { Carousel } from "react-bootstrap";
 
 interface CarouselProps {
-  firstImage: string;
-  secondImage: string;
   images: string[];
 }
 
-function ListingCarousel({ firstImage, secondImage, images }: CarouselProps) {
+function ListingCarousel({ images }: CarouselProps) {
   return (
     <>
       {images.length === 1 ? (
         <img
           className="d-block w-100 solo-image"
-          src={firstImage}
+          src={images[0]}
           alt="Picture of Plant"
         />
       ) : (
@@ -22,14 +20,14 @@ function ListingCarousel({ firstImage, secondImage, images }: CarouselProps) {
           <Carousel.Item className="carousel-item">
             <img
               className="d-block w-100"
-              src={firstImage}
+              src={images[0]}
               alt="Picture of Plant"
             />
           </Carousel.Item>
           <Carousel.Item className="carousel-item">
             <img
               className="d-block w-100"
-              src={secondImage}
+              src={images[1]}
               alt="Picture of Plant"
             />
           </Carousel.Item>

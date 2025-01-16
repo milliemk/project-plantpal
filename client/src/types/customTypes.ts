@@ -1,7 +1,7 @@
 export type Listing = {
   _id: string;
   deal: string;
-  seller: string;
+  seller: User;
   condition: string;
   delivery: string;
   description: string;
@@ -15,6 +15,18 @@ export type Listing = {
   swapfor: string;
 };
 
+export type Seller = {
+  userId: string;
+  username: string;
+  avatar?: Avatar;
+  postedListings?: string;
+};
+
+export type Avatar = {
+  secureUrl: string;
+  publicId: string;
+};
+
 export type Image = {
   secure_url: string;
   publicId: string;
@@ -25,11 +37,8 @@ export type User = {
   email: string;
   password: string;
   avatar?: Avatar;
-};
-
-export type Avatar = {
-  secureUrl: string;
-  publicId: string;
+  userId: string;
+  postedListings?: string;
 };
 
 export type LoginOkResponse = {

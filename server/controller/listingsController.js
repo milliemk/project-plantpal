@@ -4,7 +4,11 @@ import { pictureUpload } from "../utils/pictureUpload.js";
 
 const getAllListings = async (req, res) => {
   try {
-    const allListings = await ListingsModel.find({});
+    // get all listing and populate needed fields for seller
+    const allListings = await ListingsModel.find({}).populate(
+      "seller",
+      "username avatar postedListings -_id"
+    );
     return res.status(200).json({
       listings: allListings,
     });
@@ -15,28 +19,59 @@ const getAllListings = async (req, res) => {
   }
 };
 
-const postNewListing = async (request, response) => {
+const getListingsByDeal = async (request, response) => {
+  const { deal } = request.params;
+
+  // find all the listings under the chosen deal
   try {
-    const userId = request.user._id;
-
-    // upload picture in cloudinary
-    const uploadedImage = await pictureUpload(request.file.path);
-
-    if (!uploadedImage) {
-      console.log("upload failed");
-      return res.status(500).json({
-        error: "File couldn't be uploaded",
+    if (deal) {
+      const selectedDeal = await ListingsModel.find({ deal: deal }).populate(
+        "seller",
+        "username avatar postedListings -_id"
+      );
+      // if length is 0 it means no listings under that deal
+      if (selectedDeal.length === 0) {
+        return response.status(404).json({
+          message: `No listings found for the specified deal: ${deal}`,
+        });
+      }
+      // if everything goes well and listings are found
+      return response.status(200).json({
+        message: `Listings successfully retrieved for deal: ${deal}`,
+        selectedDeal,
+      });
+    } else {
+      return response.status(400).json({
+        message: "Deal parameter is required.",
       });
     }
+
+    // if something goes wrong
+  } catch (error) {
+    console.log("error :>> ", error);
+    return response.status(400).json({
+      error: "Something went wrong, please try again",
+    });
+  }
+};
+
+const postNewListing = async (request, response) => {
+  try {
+    console.log("Request User:", request.user);
+    const userId = request.user.id;
+
+    // upload picture in cloudinary
+
+    const uploadedImages = await Promise.all(
+      request.files.map(async (file) => {
+        return pictureUpload(file.path);
+      })
+    );
+
     //creating variable to save the data in
     const listingData = {
       condition: request.body.condition,
-      images: [
-        {
-          secure_url: uploadedImage.secure_url,
-          public_id: uploadedImage.public_id,
-        },
-      ],
+      images: uploadedImages,
       delivery: request.body.delivery,
       description: request.body.description,
       light: request.body.light,
@@ -62,7 +97,7 @@ const postNewListing = async (request, response) => {
 
     // After listing is created, update user data
     try {
-      const user = await UserModel.findById(userId);
+      const user = await UserModel.findById(request.user.id);
       user.postedListings.push(listing._id);
       await user.save();
       console.log("USER :>> ", user);
@@ -72,9 +107,16 @@ const postNewListing = async (request, response) => {
         error: "Error updating user data",
       });
     }
+
+    // Use populate here to include full seller info in the listing response
+    const populatedListing = await ListingsModel.findById(listing._id).populate(
+      "seller",
+      "username avatar postedListings -_id"
+    );
+
     return response.status(201).json({
       message: "Listing successfully created!",
-      listing: listing, // You can send the created listing back if needed
+      listing: populatedListing,
     });
   } catch (error) {
     console.log(error);
@@ -84,4 +126,4 @@ const postNewListing = async (request, response) => {
   }
 };
 
-export { getAllListings, postNewListing };
+export { getAllListings, postNewListing, getListingsByDeal };

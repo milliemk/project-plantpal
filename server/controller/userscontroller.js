@@ -7,6 +7,7 @@ import { pictureDelete } from "../utils/pictureDelete.js";
 import { pictureUpload } from "../utils/pictureUpload.js";
 import { generateToken } from "../utils/tokenServices.js";
 
+// avatar upload
 const avatarUpload = async (req, res) => {
   console.log(req.file);
   const userId = req.user._id;
@@ -182,15 +183,28 @@ const login = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  console.log("req :>> ", req.user);
+  try {
+    // Check if we are fetching the logged-in user's profile
+    const userId = req.user ? req.user._id : req.params._id; // Use `req.user` for /profile, `req.params.id` for /users/:id
 
-  return res.status(200).json({
-    userProfile: {
-      username: req.user.username,
-      email: req.user.email,
-      avatar: req.user.avatar,
-    },
-  });
+    // Fetch user from database by ID
+    const user = await UserModel.findById(userId); // Assuming you have UserModel to fetch users from DB
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({
+      userProfile: {
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+      },
+    });
+  } catch (error) {
+    console.log("Error fetching user profile:", error);
+    return res.status(500).json({ error: "Something went wrong" });
+  }
 };
 
 export { avatarUpload, register, login, getProfile };

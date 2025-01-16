@@ -19,5 +19,6 @@ usersRouter.post(
 usersRouter.post("/register", register);
 usersRouter.post("/login", login);
 usersRouter.get("/profile", jwtAuth, getProfile);
+usersRouter.get("/:id", getProfile);
 
 export default usersRouter;

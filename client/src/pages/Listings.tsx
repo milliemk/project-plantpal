@@ -1,20 +1,23 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Listing } from "../types/customTypes";
 import CareModal from "../components/careModal";
 import ListingCarousel from "../components/ListingCarousel";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button } from "react-bootstrap";
-
+import { Button, Form } from "react-bootstrap";
 import "./pages.scss";
 import { Link } from "react-router";
+import DMModal from "../components/DMModal";
+import SellerInfoModal from "../components/SellerInfoModal";
 
 type APIOKResponse = {
   listings: Listing[];
 };
 function Listings() {
   const [listings, setListings] = useState<Listing[] | null>(null);
+  const [deal, setDeal] = useState("");
+  const [userInfo, setUserInfo] = useState(null);
 
-  const getListings = async () => {
+  const getAllListings = async () => {
     try {
       const response = await fetch(`http://localhost:5001/api/listings`);
 
@@ -32,9 +35,44 @@ function Listings() {
     }
   };
 
+  const getListingsByDeal = async (deal = "") => {
+    try {
+      const response = await fetch(
+        `http://localhost:5001/api/listings/${deal}`
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong fetching listings by deal");
+      }
+      if (response.ok) {
+        const result = await response.json();
+        console.log("result by deal:>> ", result);
+        setListings(result.selectedDeal);
+      }
+    } catch (error) {
+      console.log("error filtering by deal :>> ", error);
+    }
+  };
+
+  const handleFilterByDeal = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    const deal = e.target.value;
+    setDeal(deal);
+  };
+
+  // Fetch all listings when the component mounts
   useEffect(() => {
-    getListings();
+    getAllListings();
   }, []);
+
+  useEffect(() => {
+    // Call getListingsByDeal only when a valid deal is selected
+    if (deal) {
+      getListingsByDeal(deal);
+    } else {
+      // If no deal is selected, fetch all listings
+      getAllListings();
+    }
+  }, [deal]);
 
   return (
     <>
@@ -42,14 +80,30 @@ function Listings() {
         <Link to="/newpost">
           <Button className="new-plant-button">Post new Plant</Button>
         </Link>
+        <Form.Group>
+          <Form.Select
+            onChange={handleFilterByDeal}
+            name="deal"
+            value={deal}
+            style={{ width: "150px" }}
+            className="filter-select"
+          >
+            <option value="">Show..</option>
+            <optgroup>
+              <option value="">All</option>
+              <option value="swap">Swap</option>
+              <option value="sale">Sale</option>
+              <option value="giveaway">Giveaway</option>
+            </optgroup>
+          </Form.Select>
+        </Form.Group>
+
         <div className="listing-container">
           {listings &&
             listings.map((listing) => {
               return (
                 <div key={listing._id} className="listing-box">
                   <ListingCarousel
-                    firstImage={listing.images[0].secure_url}
-                    secondImage={listing.images[0].secure_url}
                     images={
                       listing.images?.map((image) => image.secure_url) || []
                     }
@@ -107,10 +161,10 @@ function Listings() {
                       </p>
                     ) : null}
                   </div>
-                  {listing.deal === "Swap" ? (
+                  {listing.deal === "swap" ? (
                     <h4 className="roboto-slab swap-title listing-title">
                       <span className="material-symbols-outlined">repeat</span>{" "}
-                      {listing.species} for {listing.price}
+                      {listing.species} for {listing.swapfor}
                     </h4>
                   ) : null}
                   {listing.deal === "sale" ? (
@@ -127,19 +181,17 @@ function Listings() {
                       {listing.species}
                     </h4>
                   ) : null}
+
                   <div className="listing-body">
-                    <p
-                      className="listing-description"
-                      style={{ fontWeight: "bolder" }}
-                    >
-                      {listing.seller}:
-                    </p>
+                    <SellerInfoModal seller={listing.seller} />
                     <p className="listing-description">{listing.description}</p>
                     <CareModal
                       light={listing.light}
                       water={listing.water}
                       soil={listing.soil}
                     />
+
+                    <DMModal />
                   </div>
                 </div>
               );
