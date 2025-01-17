@@ -55,6 +55,53 @@ const getListingsByDeal = async (request, response) => {
   }
 };
 
+// search for listings
+
+const searchListings = async (request, response) => {
+  const { search } = request.query;
+
+  try {
+    // where we will store the conditions for the search query
+    const searchCriteria = {};
+
+    // regex
+    if (search) {
+      // $or = at least one of these conditions must be true in order for a document to match
+      // $regex: specifies a regular expression for pattern matching (words, combination of letters etc).
+      searchCriteria.$or = [
+        { condition: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
+        { species: { $regex: search, $options: "i" } },
+        { swapfor: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    // find all listings with this search criteria/pattern
+    const listings = await ListingsModel.find(searchCriteria).populate(
+      "seller",
+      "username avatar postedListings -_id"
+    );
+
+    if (listings.length === 0) {
+      return response.status(404).json({
+        message: "No listings found.",
+      });
+    }
+
+    return response.status(200).json({
+      message: "Listings successfully retrieved.",
+      listings,
+    });
+  } catch (error) {
+    console.error("Error retrieving listings:", error);
+    return response.status(500).json({
+      error: "Something went wrong. Please try again.",
+    });
+  }
+};
+
+// post new listing
 const postNewListing = async (request, response) => {
   try {
     console.log("Request User:", request.user);
@@ -126,4 +173,4 @@ const postNewListing = async (request, response) => {
   }
 };
 
-export { getAllListings, postNewListing, getListingsByDeal };
+export { getAllListings, postNewListing, getListingsByDeal, searchListings };

@@ -4,6 +4,7 @@ import * as formik from "formik";
 import * as yup from "yup";
 import NewPostModal from "../components/NewPostModal";
 import { useState } from "react";
+import { Link } from "react-router";
 
 function NewPost() {
   const [show, setShow] = useState(false);
@@ -143,9 +144,15 @@ function NewPost() {
   });
 
   return (
-    <div className="d-flex justify-content-center align-items-center poppins-regular form-container">
+    <div className="d-flex flex-column justify-content-center align-items-center poppins-regular form-container">
+      <Link to="/listings">
+        <Button className="go-back-button">
+          {" "}
+          <span className="material-symbols-outlined white">undo</span>
+        </Button>
+      </Link>
       <Col xs={12} md={8} lg={6} xl={8} className="mx-auto">
-        <div className="p-4 ">
+        <div>
           <h2 className="text-center mb-4 new-listing-title">New Plant</h2>
           {/* Start the form */}
           <Formik
@@ -181,7 +188,7 @@ function NewPost() {
                   />
                 </Form.Group>
                 {/* Care Guide */}
-                <div className="d-flex justify-content-evenly align-items-center poppins-regular flex-row ">
+                <div className="d-flex justify-content-evenly align-items-center poppins-regular flex-row">
                   {/* Light */}
                   <Form.Group controlId="validationFormik02">
                     <Form.Control

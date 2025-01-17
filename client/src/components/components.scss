@@ -2,6 +2,7 @@
   .dropdown-toggle {
     background-color: #b8d17b; // Custom background color
     color: #fff; // Custom text color
+    border: transparent;
 
     &:hover,
     &:focus {
@@ -33,6 +34,7 @@ body {
   align-items: center;
   border-radius: 50%;
   width: 4rem;
+  border: transparent;
   height: 4rem;
 }
 
@@ -75,7 +77,8 @@ body {
 
 .register-form {
   margin-top: 100px;
-  background-color: white;
+  background-color: rgb(89, 128, 128);
+  color: white;
   padding-left: 3rem;
   padding-right: 3rem;
   padding-bottom: 3rem;
@@ -96,6 +99,7 @@ body {
 
 .register-button {
   border: 2px solid #b8d17b;
+  background-color: #b8d17b;
   color: black;
   &:hover,
   &:focus,
@@ -107,9 +111,9 @@ body {
 }
 
 .new-plant-button {
-  border: 2px solid rgb(89, 128, 128);
+  border: 2px solid rgb(146, 202, 202);
   color: rgb(255, 255, 255);
-  background-color: rgb(89, 128, 128);
+  background-color: rgb(146, 202, 202);
   font-size: large;
   font-family: "Roboto Slab";
   margin-bottom: 2rem;
@@ -117,9 +121,9 @@ body {
   &:focus,
   &:active,
   &:target {
-    background-color: rgb(146, 202, 202);
+    background-color: rgb(89, 128, 128);
     color: #fff;
-    border: 2px solid rgb(146, 202, 202);
+    border: 2px solid rgb(89, 128, 128);
   }
 }
 

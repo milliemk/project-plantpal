@@ -14,11 +14,13 @@
 }
 
 .new-form {
-  background-color: white;
+  background-color: rgb(89, 128, 128);
+  color: #fff;
 }
 
 .new-listing-title {
   color: white;
+  margin-top: 1rem;
 }
 
 .remove-button {
@@ -53,6 +55,12 @@
   }
 }
 
+.filter-group {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 .filter-select {
   border: 2px solid rgb(89, 128, 128);
   color: rgb(255, 255, 255);
@@ -60,4 +68,42 @@
   font-size: Medium;
   font-family: "Poppins";
   margin-bottom: 2rem;
+}
+
+.filter-search {
+  border: 2px solid rgb(89, 128, 128);
+  color: rgb(255, 255, 255);
+  background-color: rgb(89, 128, 128);
+  font-size: Medium;
+  font-family: "Poppins";
+  margin-bottom: 2rem;
+  width: 350px;
+  color: white;
+}
+
+.filter-search::placeholder {
+  color: white;
+}
+
+.go-back-button {
+  border: 2px solid rgb(71, 119, 119);
+  color: white;
+  font-family: "Roboto Slab";
+  font-size: large;
+  font-weight: bolder;
+  background-color: transparent;
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: transparent;
+    color: #fff;
+    border: transparent;
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+.white {
+  color: white;
+  font-size: 50px;
 }

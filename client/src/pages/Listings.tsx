@@ -15,7 +15,7 @@ type APIOKResponse = {
 function Listings() {
   const [listings, setListings] = useState<Listing[] | null>(null);
   const [deal, setDeal] = useState("");
-  const [userInfo, setUserInfo] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
 
   const getAllListings = async () => {
     try {
@@ -33,6 +33,31 @@ function Listings() {
       const error = err as Error;
       console.log("error", error.message);
     }
+  };
+
+  const getListingsBySearch = async (searchInput = "") => {
+    try {
+      const response = await fetch(
+        `http://localhost:5001/api/listings/search?search=${searchInput}`
+      );
+      if (!response.ok) {
+        throw new Error("Something went wrong fetching listings by search");
+      }
+      if (response.ok) {
+        const result = await response.json();
+        console.log("result by search:>> ", result);
+        const searchedListings = result.listings;
+        setListings(searchedListings);
+      }
+    } catch (error) {
+      console.log("error filtering by deal :>> ", error);
+    }
+  };
+
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    setSearchInput(e.target.value);
   };
 
   const getListingsByDeal = async (deal = "") => {
@@ -65,22 +90,25 @@ function Listings() {
   }, []);
 
   useEffect(() => {
+    if (searchInput.length >= 3) {
+      getListingsBySearch(searchInput);
+    }
     // Call getListingsByDeal only when a valid deal is selected
-    if (deal) {
+    else if (deal) {
       getListingsByDeal(deal);
     } else {
       // If no deal is selected, fetch all listings
       getAllListings();
     }
-  }, [deal]);
+  }, [deal, searchInput]);
 
   return (
     <>
-      <div>
+      <div className="d-flex flex-column align-items-center">
         <Link to="/newpost">
           <Button className="new-plant-button">Post new Plant</Button>
         </Link>
-        <Form.Group>
+        <Form.Group className="filter-group">
           <Form.Select
             onChange={handleFilterByDeal}
             name="deal"
@@ -96,8 +124,15 @@ function Listings() {
               <option value="giveaway">Giveaway</option>
             </optgroup>
           </Form.Select>
-        </Form.Group>
 
+          <Form.Control
+            onChange={handleSearchInput}
+            name="search"
+            type="search"
+            className="filter-search"
+            placeholder="Search by species, location, condition..."
+          ></Form.Control>
+        </Form.Group>
         <div className="listing-container">
           {listings &&
             listings.map((listing) => {
