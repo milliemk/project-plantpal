@@ -1,15 +1,18 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import { GetProfileOkResponse, User } from "../types/customTypes";
 import ProfileComponent from "../components/ProfileComponent";
 import ShowFileInput from "../components/ShowFileInput";
+import { AuthContext } from "../Context/AuthContext";
 
 export default function Profile() {
   const [selectedFile, setSelectedFile] = useState<File | string>("");
   const [userProfile, setUserProfile] = useState<User | null>(null);
   const [showInput, setShowInput] = useState(false);
 
+  const { checkUserStatus, user } = useContext(AuthContext);
+
   // get profile
-  const handleGetProfile = async () => {
+  /*  const handleGetProfile = async () => {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -48,7 +51,7 @@ export default function Profile() {
         console.log("error :>> ", error);
       }
     }
-  };
+  }; */
 
   //attach image
   const handleAttachImage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +90,7 @@ export default function Profile() {
       if (response.ok) {
         const result = await response.json();
         console.log("result :>> ", result);
-        handleGetProfile();
+        checkUserStatus();
         setShowInput(false);
       }
     } catch (error) {
@@ -100,17 +103,17 @@ export default function Profile() {
     setShowInput(true);
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     handleGetProfile();
-  }, []);
+  }, []); */
 
   return (
     <div className="profile-container">
       <div>
         <hr />
         <div>
-          {userProfile && userProfile.avatar ? (
-            <img src={userProfile.avatar.secureUrl} alt="image" />
+          {user && user?.avatar ? (
+            <img src={user.avatar.secureUrl} alt="image" />
           ) : null}
         </div>
         <br />
@@ -122,14 +125,13 @@ export default function Profile() {
           />
         ) : null}
         <hr />
-        {userProfile ? (
+        {user ? (
           <div className="user-info">
             <p>
-              Username:{" "}
-              <span className="profile-data">{userProfile.username}</span>{" "}
+              Username: <span className="profile-data">{user?.username}</span>{" "}
             </p>
             <p>
-              Email: <span className="profile-data">{userProfile.email}</span>
+              Email: <span className="profile-data">{user?.email}</span>
             </p>
           </div>
         ) : (

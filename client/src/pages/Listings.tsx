@@ -8,6 +8,7 @@ import "./pages.scss";
 import { Link } from "react-router";
 import DMModal from "../components/DMModal";
 import SellerInfoModal from "../components/SellerInfoModal";
+import { AuthContext } from "../Context/AuthContext";
 
 type APIOKResponse = {
   listings: Listing[];
@@ -16,6 +17,8 @@ function Listings() {
   const [listings, setListings] = useState<Listing[] | null>(null);
   const [deal, setDeal] = useState("");
   const [searchInput, setSearchInput] = useState("");
+
+  const { user } = useContext(AuthContext);
 
   const getAllListings = async () => {
     try {
@@ -225,8 +228,11 @@ function Listings() {
                       water={listing.water}
                       soil={listing.soil}
                     />
-
-                    <DMModal />
+                    {user && listing.seller?._id === user.userId ? (
+                      <p>My Listing</p>
+                    ) : (
+                      <DMModal />
+                    )}
                   </div>
                 </div>
               );

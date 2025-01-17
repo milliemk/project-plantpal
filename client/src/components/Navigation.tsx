@@ -39,7 +39,7 @@ function Navigation() {
           <Dropdown.Item as={NavLink} to="/">
             Home
           </Dropdown.Item>
-          <Dropdown.Item as={NavLink} to="/listings">
+          <Dropdown.Item as={NavLink} to="listings">
             Plants
           </Dropdown.Item>
           <Dropdown.Item as={NavLink} to="/register">

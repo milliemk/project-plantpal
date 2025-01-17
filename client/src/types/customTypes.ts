@@ -1,7 +1,7 @@
 export type Listing = {
   _id: string;
   deal: string;
-  seller: User;
+  seller: Seller;
   condition: string;
   delivery: string;
   description: string;
@@ -16,7 +16,7 @@ export type Listing = {
 };
 
 export type Seller = {
-  userId: string;
+  _id: string;
   username: string;
   avatar?: Avatar;
   postedListings?: string;

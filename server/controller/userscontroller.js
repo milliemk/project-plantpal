@@ -169,6 +169,7 @@ const login = async (req, res) => {
               username: existingUser.username,
               email: existingUser.email,
               avatar: existingUser.avatar || defaultAvatar,
+              userId: existingUser._id,
             },
             token,
           });
@@ -185,10 +186,10 @@ const login = async (req, res) => {
 const getProfile = async (req, res) => {
   try {
     // Check if we are fetching the logged-in user's profile
-    const userId = req.user ? req.user._id : req.params._id; // Use `req.user` for /profile, `req.params.id` for /users/:id
+    const userId = req.user ? req.user._id : req.params._id;
 
     // Fetch user from database by ID
-    const user = await UserModel.findById(userId); // Assuming you have UserModel to fetch users from DB
+    const user = await UserModel.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -199,6 +200,7 @@ const getProfile = async (req, res) => {
         username: user.username,
         email: user.email,
         avatar: user.avatar,
+        userId: user._id,
       },
     });
   } catch (error) {

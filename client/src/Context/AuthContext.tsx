@@ -37,6 +37,7 @@ export const AuthContext = createContext<AuthContextType>(
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const token = localStorage.getItem("token");
@@ -56,7 +57,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       if (!response.ok) throw new Error("Registration failed");
 
       const result = await response.json();
-      setUser(result.user);
+      setUser(result.user); //! check if this is needed
     } catch (error) {
       console.error("Error during registration:", error);
     }
@@ -89,6 +90,40 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const checkUserStatus = async () => {
     if (token) {
       setIsAuthenticated(true);
+
+      if (!user) {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${token}`);
+
+        const requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+        };
+
+        try {
+          const response = await fetch(
+            "http://localhost:5001/api/user/profile",
+            requestOptions
+          );
+
+          // 401 you have to log in again, redirect user to login and remove token.
+          // 500, log in again redirect user to login and remove token.
+          if (!response.ok) {
+            console.log("Log in again, redirect user to login page");
+            return;
+          }
+
+          if (response.ok) {
+            const result = await response.json();
+            setUser(result.userProfile);
+          }
+        } catch (error) {
+          console.log("error :>> ", error);
+        }
+      }
+
+      // Fetch the profile and set the User in the state
+      // instead of setting the LocalAuthenictatedUserId
     } else {
       setIsAuthenticated(false);
     }

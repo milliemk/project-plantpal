@@ -81,7 +81,7 @@ body {
   color: white;
   padding-left: 3rem;
   padding-right: 3rem;
-  padding-bottom: 3rem;
+  padding-bottom: 1rem;
   padding-top: 2rem;
   border-radius: 20px;
 }
@@ -132,6 +132,7 @@ body {
   color: rgb(255, 255, 255);
   background-color: rgb(146, 202, 202);
   font-family: "Roboto Slab";
+  margin-bottom: 1rem;
   &:hover,
   &:focus,
   &:active,

@@ -7,7 +7,7 @@ const getAllListings = async (req, res) => {
     // get all listing and populate needed fields for seller
     const allListings = await ListingsModel.find({}).populate(
       "seller",
-      "username avatar postedListings -_id"
+      "username avatar postedListings _id"
     );
     return res.status(200).json({
       listings: allListings,
@@ -27,7 +27,7 @@ const getListingsByDeal = async (request, response) => {
     if (deal) {
       const selectedDeal = await ListingsModel.find({ deal: deal }).populate(
         "seller",
-        "username avatar postedListings -_id"
+        "username avatar postedListings _id"
       );
       // if length is 0 it means no listings under that deal
       if (selectedDeal.length === 0) {
@@ -80,7 +80,7 @@ const searchListings = async (request, response) => {
     // find all listings with this search criteria/pattern
     const listings = await ListingsModel.find(searchCriteria).populate(
       "seller",
-      "username avatar postedListings -_id"
+      "username avatar postedListings"
     );
 
     if (listings.length === 0) {
@@ -105,7 +105,7 @@ const searchListings = async (request, response) => {
 const postNewListing = async (request, response) => {
   try {
     console.log("Request User:", request.user);
-    const userId = request.user.id;
+    const userId = request.user._id;
 
     // upload picture in cloudinary
 
@@ -158,7 +158,7 @@ const postNewListing = async (request, response) => {
     // Use populate here to include full seller info in the listing response
     const populatedListing = await ListingsModel.findById(listing._id).populate(
       "seller",
-      "username avatar postedListings -_id"
+      "username avatar postedListings _id"
     );
 
     return response.status(201).json({
