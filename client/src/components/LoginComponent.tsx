@@ -9,7 +9,7 @@ function LoginComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, user } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   //redirect after login
   const navigateTo = useNavigate();
@@ -47,7 +47,7 @@ function LoginComponent() {
       >
         <h3 className="register-title">Login</h3>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>Email address:</Form.Label>
           <Form.Control
             name="email"
             type="email"
@@ -66,6 +66,7 @@ function LoginComponent() {
             onChange={handlePasswordChange}
           />
         </Form.Group>
+        <br />
         <Button
           className="register-button"
           variant="outline-info"

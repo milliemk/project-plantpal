@@ -52,7 +52,7 @@ function RegisterComponent() {
       >
         <h3 className="register-title">Register</h3>
         <Form.Group className="mb-3" controlId="formBasicUsername">
-          <Form.Label>Username</Form.Label>
+          <Form.Label className="text-start">Username:</Form.Label>
           <Form.Control
             name="name"
             type="name"
@@ -62,7 +62,7 @@ function RegisterComponent() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label className="text-start">Email address:</Form.Label>
           <Form.Control
             name="email"
             type="email"
@@ -73,7 +73,7 @@ function RegisterComponent() {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Password:</Form.Label>
           <Form.Control
             name="password"
             type="password"
@@ -82,6 +82,7 @@ function RegisterComponent() {
             onChange={handlePasswordChange}
           />
         </Form.Group>
+        <br />
         <Button
           className="register-button"
           variant="outline-info"

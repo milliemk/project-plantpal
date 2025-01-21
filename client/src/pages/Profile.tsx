@@ -1,57 +1,20 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
-import { GetProfileOkResponse, User } from "../types/customTypes";
 import ProfileComponent from "../components/ProfileComponent";
 import ShowFileInput from "../components/ShowFileInput";
 import { AuthContext } from "../Context/AuthContext";
+import { Thread } from "../types/customTypes";
+import "bootstrap/dist/css/bootstrap.min.css";
+import AddNewMessage from "../components/addNewMessage";
+import ShowMessage from "../components/ShowMessage";
 
 export default function Profile() {
   const [selectedFile, setSelectedFile] = useState<File | string>("");
-  const [userProfile, setUserProfile] = useState<User | null>(null);
   const [showInput, setShowInput] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [threads, setThreads] = useState<Thread[] | null>(null);
+  /*   const [messages, setMessages] = useState<Message[] | null>(null); */
 
   const { checkUserStatus, user } = useContext(AuthContext);
-
-  // get profile
-  /*  const handleGetProfile = async () => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      // THIS SHOULD BE A MODAL OR SIMILAR
-      console.log("You need to log in first");
-      return;
-    }
-
-    if (token) {
-      const myHeaders = new Headers();
-      myHeaders.append("Authorization", `Bearer ${token}`);
-
-      const requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-      };
-
-      try {
-        const response = await fetch(
-          "http://localhost:5001/api/user/profile",
-          requestOptions
-        );
-
-        // 401 you have to log in again, redirect user to login and remove token.
-        // 500, log in again redirect user to login and remove token.
-        if (!response.ok) {
-          console.log("Log in again, redirect user to login page");
-          return;
-        }
-
-        if (response.ok) {
-          const result = (await response.json()) as GetProfileOkResponse;
-          setUserProfile(result.userProfile);
-        }
-      } catch (error) {
-        console.log("error :>> ", error);
-      }
-    }
-  }; */
 
   //attach image
   const handleAttachImage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -103,14 +66,42 @@ export default function Profile() {
     setShowInput(true);
   };
 
-  /* useEffect(() => {
-    handleGetProfile();
-  }, []); */
+  const handleShowMessage = (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setShowMessage(true);
+  };
+
+  // get threads
+
+  const getThreads = async (userId = "") => {
+    let url = `http://localhost:5001/api/threads?sellerId=${userId}&buyerId=${userId}`;
+
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Something went wrong fetching messages");
+      }
+      if (response.ok) {
+        const result: Thread[] = await response.json();
+        console.log("threads by user ", result);
+        setThreads(result);
+      }
+    } catch (error) {
+      console.log("error fetching messages", error);
+    }
+  };
+
+  useEffect(() => {
+    checkUserStatus();
+    if (user && user.userId) {
+      getThreads(user.userId);
+    }
+  }, [user]);
 
   return (
     <div className="profile-container">
-      <div>
-        <hr />
+      <div className="user-column">
         <div>
           {user && user?.avatar ? (
             <img src={user.avatar.secureUrl} alt="image" />
@@ -124,7 +115,7 @@ export default function Profile() {
             handleImageSubmit={handleImageSubmit}
           />
         ) : null}
-        <hr />
+
         {user ? (
           <div className="user-info">
             <p>
@@ -137,6 +128,106 @@ export default function Profile() {
         ) : (
           <p>No user profile found.</p>
         )}
+      </div>
+      <div className="messages-page">
+        <h2>Messages</h2>
+        {/*         <h4>Threads</h4> */}
+        <div className="thread-container">
+          {threads &&
+            threads.map((thread) => {
+              return (
+                <div className="thread-box" key={thread._id}>
+                  <div className="thread-info quicksand">
+                    <p
+                      className="gluten"
+                      style={{ fontSize: 23, fontWeight: 600 }}
+                    >
+                      {thread.listingId.species}
+                    </p>{" "}
+                    <div className="d-flex flex-row gap-2">
+                      {thread.buyerId.username === user?.username ? (
+                        <p className="d-flex flex-row justify-center">
+                          <span
+                            className="material-symbols-outlined"
+                            style={{ marginRight: 5 }}
+                          >
+                            shopping_basket
+                          </span>{" "}
+                          Me
+                        </p>
+                      ) : (
+                        <p className="d-flex flex-row justify-center">
+                          <span
+                            className="material-symbols-outlined"
+                            style={{ marginRight: 5 }}
+                          >
+                            shopping_basket
+                          </span>{" "}
+                          {thread.buyerId.username}
+                        </p>
+                      )}{" "}
+                      {thread.sellerId.username === user?.username ? (
+                        <p className="d-flex flex-row justify-center">
+                          <span
+                            className="material-symbols-outlined"
+                            style={{ marginRight: 5 }}
+                          >
+                            storefront
+                          </span>{" "}
+                          Me
+                        </p>
+                      ) : (
+                        <p className="d-flex flex-row justify-center">
+                          <span
+                            className="material-symbols-outlined"
+                            style={{ marginRight: 5 }}
+                          >
+                            storefront
+                          </span>{" "}
+                          {thread.sellerId.username}
+                        </p>
+                      )}{" "}
+                    </div>
+                  </div>
+                  {/*        <ShowMessage handleShowMessage={handleShowMessage} /> */}
+                  <div>
+                    {thread.messages &&
+                      thread.messages.map((message) => {
+                        return (
+                          <div className="message-box" key={message._id}>
+                            <div>
+                              {" "}
+                              {message.senderId.username === user?.username ? (
+                                <div className="message-field-sender">
+                                  <p>Me:</p>
+                                  <p
+                                    style={{ maxWidth: 200 }}
+                                    className="text-sender"
+                                  >
+                                    {message.text}
+                                  </p>
+                                </div>
+                              ) : (
+                                <div className="message-field-receiver">
+                                  <p>{message.senderId.username}: </p>
+                                  <p
+                                    style={{ maxWidth: 200 }}
+                                    className="text-receiver"
+                                  >
+                                    {message.text}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                  <AddNewMessage />
+                </div>
+              );
+            })}
+        </div>
       </div>
     </div>
   );

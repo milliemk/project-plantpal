@@ -36,20 +36,20 @@ function Home() {
       <div className="home-container">
         <div className="welcome-top">
           <div className="welcome-box">
-            <h3 className="roboto-slab">Welcome to PlantPal! </h3>
-            <hr />
-            <p>
-              Your go-to hub for swapping, selling, and adopting plants.
-              Discover unique greenery, connect with fellow plant lovers, and
-              give plants a new home.
-            </p>
+            <h3 className="home-title">Welcome to PlantPal! </h3>
           </div>
           <div className="box1">
             <img
               src="https://res.cloudinary.com/dlnlrqxed/image/upload/v1736433378/plant-app/ylwzqhw93m6ddvk97gia.png"
               alt="plant"
               width={370}
+              height={170}
+              style={{
+                objectFit: "cover",
+                objectPosition: "9% 40%",
+              }}
             />
+            <p>Swap, sell, and adopt plants in one place</p>
           </div>
         </div>
         <div className="welcome-bottom">

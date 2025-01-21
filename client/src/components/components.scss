@@ -59,7 +59,8 @@ body {
   & a {
     color: white;
     text-decoration: none;
-    font-family: "Poppins", serif;
+    font-family: "Quicksand", serif;
+    font-weight: 600;
   }
 }
 
@@ -81,20 +82,30 @@ body {
   color: white;
   padding-left: 3rem;
   padding-right: 3rem;
-  padding-bottom: 1rem;
+  padding-bottom: 2rem;
   padding-top: 2rem;
   border-radius: 20px;
+  width: 400px;
+}
+
+.register-form .form-label {
+  text-align: left;
 }
 
 .dropdown-item.active {
   background-color: transparent;
   border-radius: 20px;
   color: white;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: larger;
 }
 
 .register-title {
   margin-bottom: 2rem;
+  text-align: center;
+  font-family: "Gluten";
+  font-weight: 900;
+  font-size: 40px;
 }
 
 .register-button {
@@ -115,7 +126,8 @@ body {
   color: rgb(255, 255, 255);
   background-color: rgb(146, 202, 202);
   font-size: large;
-  font-family: "Roboto Slab";
+  font-family: "Quicksand";
+  font-weight: 700;
   margin-bottom: 2rem;
   &:hover,
   &:focus,
@@ -207,10 +219,10 @@ body {
   left: 20px;
   border: 2px solid rgb(71, 119, 119);
   color: white;
-  width: 80px;
+  width: 90px;
   height: 40px;
   background-color: #b8d17b;
-  font-family: "Roboto Slab";
+  font-family: "Gluten";
   font-size: small;
   font-weight: bolder;
   &:hover,
@@ -223,7 +235,7 @@ body {
 }
 
 .avatar-button {
-  border: 2px solid rgb(71, 119, 119);
+  border: 2px solid transparent;
   color: white;
   width: 150px;
   height: 40px;
@@ -412,4 +424,23 @@ body {
   object-fit: cover;
   border-radius: 20px;
   border: 2px solid rgb(71, 119, 119);
+}
+
+.send-profile-message-button {
+  border: 2px solid transparent;
+  color: rgb(255, 255, 255);
+  background-color: transparent;
+  font-size: large;
+  font-family: "Gluten";
+  font-weight: 700;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:target {
+    background-color: rgb(89, 128, 128);
+    color: #fff;
+    border: 2px solid transparent;
+    transform: scale(1.3);
+  }
 }

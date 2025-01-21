@@ -8,6 +8,7 @@ import cloudinaryConfig from "./config/cloudinaryConfig.js";
 import passportStrategy from "./config/passport.js";
 import passport from "passport";
 import listingsRouter from "./routes/listingsRouter.js";
+import threadsRouter from "./routes/threadsRouter.js";
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ function loadRoutes() {
   app.use("/api/books", booksRouter);
   app.use("/api/listings", listingsRouter);
   app.use("/api/user", usersRouter);
+  app.use("/api/threads", threadsRouter);
 }
 
 (async function () {

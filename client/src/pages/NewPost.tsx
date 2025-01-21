@@ -153,7 +153,6 @@ function NewPost() {
       </Link>
       <Col xs={12} md={8} lg={6} xl={8} className="mx-auto">
         <div>
-          <h2 className="text-center mb-4 new-listing-title">New Plant</h2>
           {/* Start the form */}
           <Formik
             validationSchema={schema}
@@ -174,7 +173,9 @@ function NewPost() {
                 className="d-flex flex-column gap-3 new-form"
               >
                 {/* Plant Species */}
-
+                <h2 className="text-center mb-4 new-listing-title">
+                  New Plant
+                </h2>
                 <Form.Group controlId="validationFormik01">
                   {/*       <Form.Label>Plant Species</Form.Label> */}
                   <Form.Control

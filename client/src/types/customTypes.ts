@@ -63,3 +63,37 @@ export type LoggedInUser = {
 export type GetProfileOkResponse = {
   userProfile: User;
 };
+
+export type Thread = {
+  _id: string;
+  sellerId: SellerId;
+  buyerId: BuyerId;
+  listingId: ListingId;
+  messages: Message[];
+};
+
+export type SellerId = {
+  username: string;
+  _id: string;
+};
+
+export type BuyerId = {
+  username: string;
+  _id: string;
+};
+
+export type ListingId = {
+  species: string;
+  _id: string;
+};
+
+export type Message = {
+  _id: string;
+  senderId: SenderId;
+  text: string;
+};
+
+export type SenderId = {
+  username: string;
+  _id: string;
+};

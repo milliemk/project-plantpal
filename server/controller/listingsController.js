@@ -2,92 +2,39 @@ import ListingsModel from "../models/listingsModel.js";
 import UserModel from "../models/usersModel.js";
 import { pictureUpload } from "../utils/pictureUpload.js";
 
-const getAllListings = async (req, res) => {
-  try {
-    // get all listing and populate needed fields for seller
-    const allListings = await ListingsModel.find({}).populate(
-      "seller",
-      "username avatar postedListings _id"
-    );
-    return res.status(200).json({
-      listings: allListings,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: "something went wrong",
-    });
-  }
-};
+// get all listings with filter
 
-const getListingsByDeal = async (request, response) => {
-  const { deal } = request.params;
-
-  // find all the listings under the chosen deal
-  try {
-    if (deal) {
-      const selectedDeal = await ListingsModel.find({ deal: deal }).populate(
-        "seller",
-        "username avatar postedListings _id"
-      );
-      // if length is 0 it means no listings under that deal
-      if (selectedDeal.length === 0) {
-        return response.status(404).json({
-          message: `No listings found for the specified deal: ${deal}`,
-        });
-      }
-      // if everything goes well and listings are found
-      return response.status(200).json({
-        message: `Listings successfully retrieved for deal: ${deal}`,
-        selectedDeal,
-      });
-    } else {
-      return response.status(400).json({
-        message: "Deal parameter is required.",
-      });
-    }
-
-    // if something goes wrong
-  } catch (error) {
-    console.log("error :>> ", error);
-    return response.status(400).json({
-      error: "Something went wrong, please try again",
-    });
-  }
-};
-
-// search for listings
-
-const searchListings = async (request, response) => {
-  const { search } = request.query;
+const getAllListings = async (request, response) => {
+  const { keyword } = request.query;
+  const { deal } = request.query;
 
   try {
     // where we will store the conditions for the search query
-    const searchCriteria = {};
+    const searchCriteria = {
+      $or: [],
+    };
 
     // regex
-    if (search) {
+    if (keyword) {
       // $or = at least one of these conditions must be true in order for a document to match
       // $regex: specifies a regular expression for pattern matching (words, combination of letters etc).
       searchCriteria.$or = [
-        { condition: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
-        { location: { $regex: search, $options: "i" } },
-        { species: { $regex: search, $options: "i" } },
-        { swapfor: { $regex: search, $options: "i" } },
+        { condition: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+        { location: { $regex: keyword, $options: "i" } },
+        { species: { $regex: keyword, $options: "i" } },
+        { swapfor: { $regex: keyword, $options: "i" } },
       ];
     }
 
-    // find all listings with this search criteria/pattern
-    const listings = await ListingsModel.find(searchCriteria).populate(
-      "seller",
-      "username avatar postedListings"
-    );
-
-    if (listings.length === 0) {
-      return response.status(404).json({
-        message: "No listings found.",
-      });
+    if (deal) {
+      searchCriteria.deal = deal;
     }
+
+    // find all listings with this search criteria/pattern
+    const listings = await ListingsModel.find(searchCriteria)
+      .sort({ createdAt: -1 })
+      .populate("seller", "username avatar postedListings");
 
     return response.status(200).json({
       message: "Listings successfully retrieved.",
@@ -173,4 +120,4 @@ const postNewListing = async (request, response) => {
   }
 };
 
-export { getAllListings, postNewListing, getListingsByDeal, searchListings };
+export { getAllListings, postNewListing };

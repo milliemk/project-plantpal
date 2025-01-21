@@ -10,9 +10,6 @@ import DMModal from "../components/DMModal";
 import SellerInfoModal from "../components/SellerInfoModal";
 import { AuthContext } from "../Context/AuthContext";
 
-type APIOKResponse = {
-  listings: Listing[];
-};
 function Listings() {
   const [listings, setListings] = useState<Listing[] | null>(null);
   const [deal, setDeal] = useState("");
@@ -20,29 +17,11 @@ function Listings() {
 
   const { user } = useContext(AuthContext);
 
-  const getAllListings = async () => {
-    try {
-      const response = await fetch(`http://localhost:5001/api/listings`);
+  const getListingsBySearch = async (searchInput = "", deal = "") => {
+    let url = `http://localhost:5001/api/listings?keyword=${searchInput}&deal=${deal}`;
 
-      if (!response.ok) {
-        throw new Error("Something went wrong");
-      }
-      if (response.ok) {
-        const result = (await response.json()) as APIOKResponse;
-        console.log("result :>> ", result);
-        setListings(result.listings);
-      }
-    } catch (err) {
-      const error = err as Error;
-      console.log("error", error.message);
-    }
-  };
-
-  const getListingsBySearch = async (searchInput = "") => {
     try {
-      const response = await fetch(
-        `http://localhost:5001/api/listings/search?search=${searchInput}`
-      );
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Something went wrong fetching listings by search");
       }
@@ -59,25 +38,10 @@ function Listings() {
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-
-    setSearchInput(e.target.value);
-  };
-
-  const getListingsByDeal = async (deal = "") => {
-    try {
-      const response = await fetch(
-        `http://localhost:5001/api/listings/${deal}`
-      );
-      if (!response.ok) {
-        throw new Error("Something went wrong fetching listings by deal");
-      }
-      if (response.ok) {
-        const result = await response.json();
-        console.log("result by deal:>> ", result);
-        setListings(result.selectedDeal);
-      }
-    } catch (error) {
-      console.log("error filtering by deal :>> ", error);
+    if (e.target.value.length > 2) {
+      setSearchInput(e.target.value);
+    } else {
+      setSearchInput("");
     }
   };
 
@@ -89,20 +53,11 @@ function Listings() {
 
   // Fetch all listings when the component mounts
   useEffect(() => {
-    getAllListings();
+    getListingsBySearch();
   }, []);
 
   useEffect(() => {
-    if (searchInput.length >= 3) {
-      getListingsBySearch(searchInput);
-    }
-    // Call getListingsByDeal only when a valid deal is selected
-    else if (deal) {
-      getListingsByDeal(deal);
-    } else {
-      // If no deal is selected, fetch all listings
-      getAllListings();
-    }
+    getListingsBySearch(searchInput, deal);
   }, [deal, searchInput]);
 
   return (
