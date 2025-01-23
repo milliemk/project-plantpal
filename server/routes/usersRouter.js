@@ -4,6 +4,7 @@ import {
   getProfile,
   login,
   register,
+  updateFavourites,
 } from "../controller/userscontroller.js";
 import multerUpload from "../middlewares/multer.js";
 import jwtAuth from "../middlewares/jwtAuth.js";
@@ -19,6 +20,7 @@ usersRouter.post(
 usersRouter.post("/register", register);
 usersRouter.post("/login", login);
 usersRouter.get("/profile", jwtAuth, getProfile);
+usersRouter.post("/favourites", jwtAuth, updateFavourites);
 usersRouter.get("/:id", getProfile);
 
 export default usersRouter;

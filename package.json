@@ -4,6 +4,7 @@
   },
   "dependencies": {
     "formik": "^2.4.6",
+    "react-loader-spinner": "^6.1.6",
     "yup": "^1.6.1"
   }
 }

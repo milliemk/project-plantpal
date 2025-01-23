@@ -4,27 +4,34 @@ const userSchema = mongoose.Schema(
   {
     username: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
 
     email: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     password: {
       type: String,
-      require: true,
+      required: true,
     },
     avatar: {
       secureUrl: { type: String, required: false },
       publicId: { type: String, required: false },
     },
+    favourites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Listing",
+        required: false,
+      },
+    ],
     postedListings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Listing" }],
   },
   {
-    timeStamps: {
+    timestamps: {
       createdAt: "created_at",
       updatedAt: "updated_at",
     },

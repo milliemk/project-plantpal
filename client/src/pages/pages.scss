@@ -108,3 +108,66 @@
   color: white;
   font-size: 50px;
 }
+
+.profile-navbar {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.profile-navbar a {
+  font-family: "Gluten";
+  font-size: 18px;
+}
+
+.profile-navbar a:hover {
+  color: rgb(184, 209, 123);
+}
+
+.active {
+  color: rgb(184, 209, 123);
+  transform: scale(1.3);
+}
+
+.my-listing {
+  position: absolute;
+  left: 5%;
+  bottom: 2%;
+  font-family: "Gluten";
+  color: rgb(71, 119, 119);
+}
+
+.add-fav {
+  position: absolute;
+  left: 42%;
+  bottom: 0%;
+  font-family: "Gluten";
+  color: rgb(71, 119, 119);
+  background-color: transparent;
+  border: transparent;
+}
+
+.add-fav:active {
+  color: rgb(71, 119, 119);
+  background-color: transparent;
+  border: transparent;
+}
+
+.add-fav:hover {
+  color: rgb(71, 119, 119);
+  background-color: transparent;
+  border: transparent;
+}
+
+.add-fav:focus {
+  color: rgb(71, 119, 119);
+  background-color: transparent;
+  border: transparent;
+}
+
+.my-listing p {
+  font-size: 30px;
+}

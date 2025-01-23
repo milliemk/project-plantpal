@@ -92,12 +92,17 @@ body {
   text-align: left;
 }
 
+.dropdown-item {
+  font-size: large;
+}
+
 .dropdown-item.active {
   background-color: transparent;
   border-radius: 20px;
   color: white;
   font-weight: 700;
-  font-size: larger;
+  color: #b8d17b;
+  font-size: large;
 }
 
 .register-title {
@@ -164,6 +169,11 @@ body {
   height: 33rem;
   margin-bottom: 1rem;
   border-radius: 10px;
+  color: rgb(71, 119, 119);
+
+  & p {
+    margin-bottom: 1rem;
+  }
 }
 
 .symbol-care {
@@ -268,11 +278,17 @@ body {
   object-position: center;
 }
 
+.image-container {
+  position: relative; /* Establishes a positioning context */
+  width: 375px; /* Match the width of the image */
+  height: 300px; /* Match the height of the image */
+}
+
 .solo-image {
   object-fit: cover;
   object-position: center;
-  height: 300px;
-  width: 375px;
+  height: 100%; /* Full height of the container */
+  width: 100%; /* Full width of the container */
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
@@ -443,4 +459,20 @@ body {
     border: 2px solid transparent;
     transform: scale(1.3);
   }
+}
+
+.message-login-register a {
+  color: white;
+  text-decoration: none;
+}
+
+.message-login-register a:hover {
+  color: rgb(146, 202, 202);
+  text-decoration: none;
+}
+
+.poppins-regular {
+  font-family: "Poppins", serif;
+  font-weight: 400;
+  font-style: normal;
 }

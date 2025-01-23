@@ -1,7 +1,7 @@
+import ListingsModel from "../models/listingsModel.js";
 import ThreadsModel from "../models/threadsModel.js";
 
 const getThreads = async (req, res) => {
-  console.log("Fetching threads...");
   const { sellerId, buyerId } = req.query;
 
   const query = {
@@ -26,6 +26,30 @@ const getThreads = async (req, res) => {
   }
 };
 
+// start new
+const startNewThread = async (req, res) => {
+  console.log("starting new thread");
+  const listingId = req.body.listingId;
+  const listing = await ListingsModel.findById(listingId);
+  const user = req.user;
+
+  const threadData = {
+    sellerId: listing.seller._id,
+    buyerId: user._id,
+    listingId: listing._id,
+    messages: {
+      senderId: user._id,
+      text: req.body.text,
+    },
+  };
+
+  const thread = await ThreadsModel.create(threadData);
+  res.status(200).json({
+    thread: thread,
+  });
+};
+
+// send message
 const sendMessage = async (req, res) => {
   console.log("message recieved...");
   const { threadId } = req.params;
@@ -49,4 +73,4 @@ const sendMessage = async (req, res) => {
   });
 };
 
-export { getThreads, sendMessage };
+export { getThreads, sendMessage, startNewThread };

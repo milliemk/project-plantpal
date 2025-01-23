@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./components.scss";
-import { Carousel } from "react-bootstrap";
+import { Button, Carousel } from "react-bootstrap";
 
 interface CarouselProps {
   images: string[];
@@ -10,11 +10,13 @@ function ListingCarousel({ images }: CarouselProps) {
   return (
     <>
       {images.length === 1 ? (
-        <img
-          className="d-block w-100 solo-image"
-          src={images[0]}
-          alt="Picture of Plant"
-        />
+        <div className="image-container">
+          <img
+            className="d-block w-100 solo-image"
+            src={images[0]}
+            alt="Picture of Plant"
+          />
+        </div>
       ) : (
         <Carousel slide={false}>
           <Carousel.Item className="carousel-item">

@@ -116,6 +116,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
           if (response.ok) {
             const result = await response.json();
             setUser(result.userProfile);
+            console.log("result.userProfile :>> ", result.userProfile);
           }
         } catch (error) {
           console.log("error :>> ", error);

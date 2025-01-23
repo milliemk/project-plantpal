@@ -7,6 +7,25 @@ import { pictureUpload } from "../utils/pictureUpload.js";
 const getAllListings = async (request, response) => {
   const { keyword } = request.query;
   const { deal } = request.query;
+  const { sellerId } = request.query;
+  const { listingId } = request.query;
+
+  // Check for a specific listing by its ID
+  /*   if (listingId) {
+    const listing = await ListingsModel.findById(listingId).populate(
+      "seller",
+      "username avatar postedListings"
+    );
+
+    if (!listing) {
+      return response.status(404).json({ message: "Listing not found." });
+    }
+
+    return response.status(200).json({
+      message: "Listing successfully retrieved.",
+      listing,
+    });
+  } */
 
   try {
     // where we will store the conditions for the search query
@@ -29,6 +48,14 @@ const getAllListings = async (request, response) => {
 
     if (deal) {
       searchCriteria.deal = deal;
+    }
+
+    if (sellerId) {
+      searchCriteria.seller = sellerId;
+    }
+
+    if (listingId) {
+      searchCriteria._id = listingId;
     }
 
     // find all listings with this search criteria/pattern
@@ -76,6 +103,7 @@ const postNewListing = async (request, response) => {
       water: request.body.water,
       seller: userId,
       deal: request.body.deal,
+      swapfor: request.body.swapfor,
     };
 
     let listing;

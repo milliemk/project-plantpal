@@ -63,6 +63,59 @@ const avatarUpload = async (req, res) => {
   }
 };
 
+// ADD FAVOURITES
+const updateFavourites = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { listingId, action } = req.body;
+
+    console.log("Received listingId:", listingId);
+    console.log("Received action:", action);
+
+    // Fetch the user from the database
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Initialize the favourites array if it doesn't exist
+    if (!user.favourites) {
+      user.favourites = [];
+      await user.save(); // Save the user document after initializing the favourites field
+    }
+
+    let update;
+
+    if (action === "add") {
+      // Use $addToSet to ensure the listingId is only added once
+      update = { $addToSet: { favourites: listingId } };
+    } else if (action === "delete") {
+      // Use $pull to remove the listingId from favourites
+      update = { $pull: { favourites: listingId } };
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Invalid action. Use 'add' or 'delete'." });
+    }
+
+    // Update the user's favourites array in the database
+    const updatedUser = await UserModel.findByIdAndUpdate(userId, update, {
+      new: true, // Return the updated user
+    });
+
+    return res.status(200).json({
+      message: `Favourite ${
+        action === "add" ? "added" : "removed"
+      } successfully.`,
+      favourites: updatedUser.favourites, // Return the updated favourites array
+    });
+  } catch (error) {
+    console.error("Error updating favourites:", error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 // REGISTER
 const register = async (req, res) => {
   console.log("req.body", req.body);
@@ -201,6 +254,10 @@ const getProfile = async (req, res) => {
         email: user.email,
         avatar: user.avatar,
         userId: user._id,
+        postedListings: user.postedListings,
+        favourites: user.favourites,
+        createdAt: user.created_at,
+        updatedAt: user.updated_at,
       },
     });
   } catch (error) {
@@ -209,4 +266,4 @@ const getProfile = async (req, res) => {
   }
 };
 
-export { avatarUpload, register, login, getProfile };
+export { avatarUpload, register, login, getProfile, updateFavourites };

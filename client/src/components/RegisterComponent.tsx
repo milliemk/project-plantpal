@@ -90,6 +90,9 @@ function RegisterComponent() {
         >
           Submit
         </Button>
+        <div className="message-login-register" style={{ marginTop: 30 }}>
+          Already have an account? <a href="/login">Login here!</a>
+        </div>
       </Form>
     </div>
   );

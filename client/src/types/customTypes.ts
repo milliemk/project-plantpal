@@ -39,6 +39,7 @@ export type User = {
   avatar?: Avatar;
   userId: string;
   postedListings?: string;
+  favourites: string[];
 };
 
 export type LoginOkResponse = {

@@ -305,12 +305,11 @@ p {
 }
 
 .user-column {
-  left: 30px;
-  top: 100px;
-  height: 370px;
+  height: 400px;
   background-color: rgb(89, 128, 128);
   color: white;
   border-radius: 20px;
+  padding: 1rem;
 }
 
 .user-column img {
@@ -322,7 +321,6 @@ p {
 }
 
 .user-info {
-  margin-top: 1rem;
   padding: 1rem;
   text-align: start;
 }
@@ -332,10 +330,17 @@ p {
   font-weight: 280;
 }
 
+.profile-pages-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
 /* Messages and threads */
 
 .messages-page {
-  margin-left: 5rem;
   & h2 {
     font-family: "Gluten";
     font-size: 50px;
@@ -350,6 +355,7 @@ p {
 .thread-container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 2rem;
 }
 
@@ -362,6 +368,7 @@ p {
   padding-top: 1rem;
   padding-bottom: 1rem;
   border-radius: 20px;
+  min-width: 400px;
 }
 
 .thread-info {
@@ -385,6 +392,12 @@ p {
   gap: 1rem;
   padding-left: 2rem;
   padding-right: 2rem;
+  margin-top: 1.5rem;
+}
+
+.messages-scroll {
+  overflow: auto;
+  height: 350px;
 }
 
 .message-field-sender {

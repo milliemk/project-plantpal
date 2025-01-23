@@ -74,6 +74,9 @@ function LoginComponent() {
         >
           Submit
         </Button>
+        <div className="message-login-register" style={{ marginTop: 30 }}>
+          Don't have an account yet? <a href="/register">Register here!</a>
+        </div>
       </Form>
     </div>
   );

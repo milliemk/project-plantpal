@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Listing } from "../types/customTypes";
 import { Link } from "react-router";
+import Loader from "../components/Loader";
 
 type APIOKResponse = {
   listings: Listing[];
@@ -8,6 +9,7 @@ type APIOKResponse = {
 
 function Home() {
   const [listings, setListings] = useState<Listing[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getListings = async () => {
     try {
@@ -24,6 +26,8 @@ function Home() {
     } catch (err) {
       const error = err as Error;
       console.log("error", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -53,71 +57,89 @@ function Home() {
           </div>
         </div>
         <div className="welcome-bottom">
-          <div className="box">
-            <Link to="listings">
-              <div className="new-listings-title">
-                <span className="material-symbols-outlined">repeat</span>
-              </div>
-              {listings &&
-                listings.map((listing) => {
-                  if (listing.deal === "swap")
-                    return (
-                      <div key={listing._id} className="new-listings">
-                        <img
-                          className="hero-image"
-                          src={listing.images[0].secure_url}
-                          alt="Plant Image"
-                        />
-                        <p className="hero-text">{listing.species}</p>
-                      </div>
-                    );
-                })}
-            </Link>
-          </div>
-          <div className="box">
-            <Link to="listings">
-              <div className="new-listings-title">
-                <span className="material-symbols-outlined">sell</span>
-              </div>
-              {listings &&
-                listings.map((listing) => {
-                  if (listing.deal === "sale")
-                    return (
-                      <div key={listing._id} className="new-listings">
-                        <img
-                          className="hero-image"
-                          src={listing.images[0].secure_url}
-                          alt="Plant Image"
-                        />
-                        <p className="hero-text">{listing.species}</p>
-                      </div>
-                    );
-                })}
-            </Link>
-          </div>
-          <div className="box">
-            <Link to="listings">
-              <div className="new-listings-title">
-                <span className="material-symbols-outlined">
-                  featured_seasonal_and_gifts
-                </span>
-              </div>
-              {listings &&
-                listings.map((listing) => {
-                  if (listing.deal === "giveaway")
-                    return (
-                      <div key={listing._id} className="new-listings">
-                        <img
-                          className="hero-image"
-                          src={listing.images[0].secure_url}
-                          alt="Plant Image"
-                        />
-                        <p className="hero-text">{listing.species}</p>
-                      </div>
-                    );
-                })}
-            </Link>
-          </div>
+          {isLoading ? (
+            <div style={{ marginBottom: 200 }}>
+              <Loader />
+            </div>
+          ) : (
+            <div className="box">
+              <Link to="listings">
+                <div className="new-listings-title">
+                  <span className="material-symbols-outlined">repeat</span>
+                </div>
+                {listings &&
+                  listings.map((listing) => {
+                    if (listing.deal === "swap")
+                      return (
+                        <div key={listing._id} className="new-listings">
+                          <img
+                            className="hero-image"
+                            src={listing.images[0].secure_url}
+                            alt="Plant Image"
+                          />
+                          <p className="hero-text">{listing.species}</p>
+                        </div>
+                      );
+                  })}
+              </Link>
+            </div>
+          )}
+          {isLoading ? (
+            <div style={{ marginBottom: 200 }}>
+              <Loader />
+            </div>
+          ) : (
+            <div className="box">
+              <Link to="listings">
+                <div className="new-listings-title">
+                  <span className="material-symbols-outlined">sell</span>
+                </div>
+                {listings &&
+                  listings.map((listing) => {
+                    if (listing.deal === "sale")
+                      return (
+                        <div key={listing._id} className="new-listings">
+                          <img
+                            className="hero-image"
+                            src={listing.images[0].secure_url}
+                            alt="Plant Image"
+                          />
+                          <p className="hero-text">{listing.species}</p>
+                        </div>
+                      );
+                  })}
+              </Link>
+            </div>
+          )}
+          {isLoading ? (
+            <div style={{ marginBottom: 200 }}>
+              <Loader />
+            </div>
+          ) : (
+            <div className="box">
+              <Link to="listings">
+                <div className="new-listings-title">
+                  <span className="material-symbols-outlined">
+                    featured_seasonal_and_gifts
+                  </span>
+                </div>
+                {listings &&
+                  listings.map((listing) => {
+                    if (listing.deal === "giveaway")
+                      return (
+                        <div key={listing._id} className="new-listings">
+                          <img
+                            className="hero-image"
+                            src={listing.images[0].secure_url}
+                            alt="Plant Image"
+                          />
+                          <p className="hero-text">{listing.species}</p>
+                        </div>
+                      );
+                  })}
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </>

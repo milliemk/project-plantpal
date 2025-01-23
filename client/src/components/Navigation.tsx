@@ -42,15 +42,16 @@ function Navigation() {
           <Dropdown.Item as={NavLink} to="listings">
             Plants
           </Dropdown.Item>
-          <Dropdown.Item as={NavLink} to="/register">
-            Register
-          </Dropdown.Item>
-          <Dropdown.Item as={NavLink} to="/login">
-            Login
-          </Dropdown.Item>
-          <Dropdown.Item as={NavLink} to="/profile">
-            Profile
-          </Dropdown.Item>
+          {isAuthenticated ? null : (
+            <Dropdown.Item as={NavLink} to="/login">
+              Login
+            </Dropdown.Item>
+          )}
+          {isAuthenticated ? (
+            <Dropdown.Item as={NavLink} to="/profile/listings">
+              Profile
+            </Dropdown.Item>
+          ) : null}
         </Dropdown.Menu>
       </Dropdown>
     </div>
