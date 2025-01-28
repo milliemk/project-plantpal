@@ -1,12 +1,10 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { User } from "../types/customTypes";
 
-// props
 type AuthContextProviderProps = {
   children: ReactNode;
 };
 
-// context type
 type AuthContextType = {
   user: User | null;
   isAuthenticated: boolean;
@@ -16,11 +14,10 @@ type AuthContextType = {
     password: string
   ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
-  checkUserStatus: () => void;
+  checkUserStatus: (force: boolean) => void;
   logout: () => void;
 };
 
-// initial value
 const AuthContextInitialValue = {
   user: {} as User,
   isAuthenticated: false,
@@ -37,7 +34,6 @@ export const AuthContext = createContext<AuthContextType>(
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const token = localStorage.getItem("token");
@@ -54,12 +50,16 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         body: JSON.stringify({ username, email, password }),
       });
 
-      if (!response.ok) throw new Error("Registration failed");
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || "Registration Failed");
+      }
 
       const result = await response.json();
-      setUser(result.user); //! check if this is needed
+      setUser(result.user);
     } catch (error) {
       console.error("Error during registration:", error);
+      throw error;
     }
   };
 
@@ -84,14 +84,16 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       console.log("user :>> ", result.user);
     } catch (error) {
       console.error("Error during login:", error);
+      throw error;
     }
   };
 
-  const checkUserStatus = async () => {
+  // The force parameter forces a fetch of the user's profile from the server, even if the user object already exists.
+  const checkUserStatus = async (force = false) => {
     if (token) {
       setIsAuthenticated(true);
 
-      if (!user) {
+      if (!user || force) {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${token}`);
 
@@ -105,9 +107,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             "http://localhost:5001/api/user/profile",
             requestOptions
           );
-
-          // 401 you have to log in again, redirect user to login and remove token.
-          // 500, log in again redirect user to login and remove token.
           if (!response.ok) {
             console.log("Log in again, redirect user to login page");
             return;
@@ -122,9 +121,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
           console.log("error :>> ", error);
         }
       }
-
-      // Fetch the profile and set the User in the state
-      // instead of setting the LocalAuthenictatedUserId
     } else {
       setIsAuthenticated(false);
     }

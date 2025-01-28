@@ -1,12 +1,12 @@
 .navigation {
   .dropdown-toggle {
-    background-color: #b8d17b; // Custom background color
-    color: #fff; // Custom text color
+    background-color: #b8d17b;
+    color: #fff;
     border: transparent;
 
     &:hover,
     &:focus {
-      background-color: #b8d17b; // Custom hover color
+      background-color: #b8d17b;
       color: #fff;
     }
   }
@@ -279,16 +279,16 @@ body {
 }
 
 .image-container {
-  position: relative; /* Establishes a positioning context */
-  width: 375px; /* Match the width of the image */
-  height: 300px; /* Match the height of the image */
+  position: relative;
+  width: 100%;
+  height: 300px;
 }
 
 .solo-image {
   object-fit: cover;
   object-position: center;
-  height: 100%; /* Full height of the container */
-  width: 100%; /* Full width of the container */
+  height: 100%;
+  width: 100%;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
@@ -358,6 +358,24 @@ body {
 .DM-modal-header {
   background-color: rgb(71, 119, 119);
   padding: 0.5rem;
+}
+
+.please-DM-header {
+  background-color: rgb(71, 119, 119);
+  padding: 0.5rem;
+
+  & span {
+    font-size: 30px;
+  }
+}
+
+.please-modal-body {
+  padding: 1rem;
+  font-size: 18px;
+
+  & a {
+    color: rgb(71, 119, 119);
+  }
 }
 
 .send-button {
@@ -475,4 +493,9 @@ body {
   font-family: "Poppins", serif;
   font-weight: 400;
   font-style: normal;
+}
+
+.redirect-login-link {
+  color: rgb(146, 202, 202);
+  cursor: pointer;
 }

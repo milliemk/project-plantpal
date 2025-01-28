@@ -52,7 +52,7 @@ export default function Profile() {
       if (response.ok) {
         const result = await response.json();
         console.log("result :>> ", result);
-        checkUserStatus();
+        checkUserStatus(true);
         setShowInput(false);
       }
     } catch (error) {
@@ -99,10 +99,7 @@ export default function Profile() {
           </Nav.Link>
         </Nav.Item>
       </div>
-      <div
-        className="d-flex justify-content-center gap-3"
-        style={{ marginTop: 30 }}
-      >
+      <div className="profile-cont" style={{ marginTop: 30 }}>
         <div className="profile-container">
           <div className="user-column">
             <div>

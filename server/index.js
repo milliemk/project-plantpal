@@ -1,16 +1,13 @@
+import "./dotenvSetup.js"; // Ensures process.env is populated firstß
 import express from "express";
 import cors from "cors";
-import * as dotenv from "dotenv";
 import mongoose from "mongoose";
-import booksRouter from "./routes/booksRouter.js";
 import usersRouter from "./routes/usersRouter.js";
 import cloudinaryConfig from "./config/cloudinaryConfig.js";
 import passportStrategy from "./config/passport.js";
 import passport from "passport";
 import listingsRouter from "./routes/listingsRouter.js";
 import threadsRouter from "./routes/threadsRouter.js";
-
-dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -44,7 +41,6 @@ function startServer() {
 }
 
 function loadRoutes() {
-  app.use("/api/books", booksRouter);
   app.use("/api/listings", listingsRouter);
   app.use("/api/user", usersRouter);
   app.use("/api/threads", threadsRouter);

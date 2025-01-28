@@ -3,7 +3,6 @@ import "./components.scss";
 import { Button, Modal } from "react-bootstrap";
 import { Link } from "react-router";
 
-// Define the props for NewPostModal
 interface NewPostModalProps {
   show: boolean;
   handleClose: () => void;

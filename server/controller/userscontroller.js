@@ -14,28 +14,35 @@ const avatarUpload = async (req, res) => {
   console.log("userId :>> ", userId);
 
   if (!req.file) {
-    return res.status(500).json({
+    return res.status(400).json({
       error: "file extension not supported",
     });
   }
+
+  // Get the user’s details and current avatar ID.
   try {
     const user = req.user;
     console.log("user :>> ", user);
     const publicIdAvatar = user.avatar.publicId;
     console.log("publicIdAvatar :>> ", publicIdAvatar);
 
+    // If the user already has an avatar, delete the old one from storage (e.g., Cloudinary)
     if (publicIdAvatar) {
       await pictureDelete(publicIdAvatar);
     }
 
+    // Upload the new image to cloudinary
     const uploadedImage = await pictureUpload(req.file.path);
+
     if (!uploadedImage) {
       console.log("upload failed");
-      return res.status(500).json({
+      // 503, service/cloudinary unavailable
+      return res.status(503).json({
         error: "file couldn't be uploaded",
       });
     }
 
+    // Update the user's avatar information in the database using the uploaded image
     console.log("uploadedImage :>> ", uploadedImage);
     if (uploadedImage) {
       const updatedUser = await UserModel.findByIdAndUpdate(userId, {
@@ -47,6 +54,7 @@ const avatarUpload = async (req, res) => {
 
       console.log("updatedUser :>> ", updatedUser);
 
+      // Send a success response with the updated avatar details
       return res.status(200).json({
         message: "Avatar successfully uploaded",
         avatar: {
@@ -116,6 +124,12 @@ const updateFavourites = async (req, res) => {
   }
 };
 
+// function to check if email is in a valid format
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 // REGISTER
 const register = async (req, res) => {
   console.log("req.body", req.body);
@@ -134,6 +148,19 @@ const register = async (req, res) => {
   if (existingUsername) {
     return res.status(400).json({
       message: "Sorry, this username is already taken.",
+    });
+  }
+
+  // Make sure password is at least 6 characters
+  if (password.length < 6) {
+    return res.status(400).json({
+      message: "Password must be at least 6 characters.",
+    });
+  }
+
+  if (!isValidEmail(email)) {
+    return res.status(400).json({
+      message: "Please enter a valid email.",
     });
   }
 
@@ -180,7 +207,11 @@ const login = async (req, res) => {
   console.log("req.body :>> ", req.body);
 
   const { email, password } = req.body;
-  // input validation!!
+  if (!isValidEmail(email)) {
+    return res.status(400).json({
+      message: "Please enter a valid email.",
+    });
+  }
 
   // check if email exists
   try {
@@ -236,13 +267,20 @@ const login = async (req, res) => {
   }
 };
 
+// GET THE USER PROFILE
 const getProfile = async (req, res) => {
   try {
     // Check if we are fetching the logged-in user's profile
     const userId = req.user ? req.user._id : req.params._id;
 
-    // Fetch user from database by ID
-    const user = await UserModel.findById(userId);
+    // Fetch user from database by ID and populate
+    const user = await UserModel.findById(userId).populate({
+      path: "favourites",
+      populate: {
+        path: "seller",
+        select: "username avatar postedListings createdAt",
+      },
+    });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -256,8 +294,8 @@ const getProfile = async (req, res) => {
         userId: user._id,
         postedListings: user.postedListings,
         favourites: user.favourites,
-        createdAt: user.created_at,
-        updatedAt: user.updated_at,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
     });
   } catch (error) {

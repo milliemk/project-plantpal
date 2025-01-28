@@ -3,6 +3,7 @@ import "./components.scss";
 import { Modal, Button } from "react-bootstrap";
 import { useState } from "react";
 import { Seller } from "../types/customTypes";
+import { formatDistanceToNow } from "date-fns";
 
 interface SellerInfoProps {
   seller: Seller | null;
@@ -13,6 +14,10 @@ function SellerInfoModal({ seller }: SellerInfoProps) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const memberSince = seller?.createdAt
+    ? formatDistanceToNow(new Date(seller.createdAt), { addSuffix: true })
+    : "Date not available";
 
   return (
     <>
@@ -44,7 +49,7 @@ function SellerInfoModal({ seller }: SellerInfoProps) {
             />
             <div style={{ fontSize: 14 }} className="info-box-seller">
               <span>
-                Member since: <p>2024-01-03</p>{" "}
+                Joined: <p>{memberSince}</p>{" "}
               </span>
               <p>Plants posted: {seller?.postedListings?.length}</p>
             </div>

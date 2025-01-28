@@ -9,8 +9,9 @@ function RegisterComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const { register, user } = useContext(AuthContext);
+  const { register } = useContext(AuthContext);
 
   const navigateTo = useNavigate();
   const redirectToLoginPage = () => {
@@ -37,10 +38,10 @@ function RegisterComponent() {
 
     try {
       await register(username, email, password);
-
-      redirectToLoginPage();
+      redirectToLoginPage(); // Only runs if register is successful
     } catch (error) {
-      console.log("Error during login:", error);
+      const errorResponse = error as Error;
+      setErrorMsg(errorResponse.message);
     }
   };
 
@@ -50,7 +51,9 @@ function RegisterComponent() {
         className="register-form poppins-regular"
         onSubmit={handleRegisterClick}
       >
+        <p>{errorMsg}</p>
         <h3 className="register-title">Register</h3>
+
         <Form.Group className="mb-3" controlId="formBasicUsername">
           <Form.Label className="text-start">Username:</Form.Label>
           <Form.Control
@@ -65,7 +68,7 @@ function RegisterComponent() {
           <Form.Label className="text-start">Email address:</Form.Label>
           <Form.Control
             name="email"
-            type="email"
+            type="text"
             placeholder="Enter email"
             value={email}
             onChange={handleEmailChange}

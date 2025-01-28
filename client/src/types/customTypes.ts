@@ -20,6 +20,7 @@ export type Seller = {
   username: string;
   avatar?: Avatar;
   postedListings?: string;
+  createdAt: string;
 };
 
 export type Avatar = {
@@ -39,7 +40,8 @@ export type User = {
   avatar?: Avatar;
   userId: string;
   postedListings?: string;
-  favourites: string[];
+  favourites?: Listing[];
+  createdAt?: string;
 };
 
 export type LoginOkResponse = {
@@ -97,4 +99,8 @@ export type Message = {
 export type SenderId = {
   username: string;
   _id: string;
+};
+
+export type ErrorResponse = {
+  message: string;
 };

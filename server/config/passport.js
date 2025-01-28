@@ -4,7 +4,7 @@ import UserModel from "../models/usersModel.js";
 const passportOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   // in secret key do the env file thing, process.env blabla
-  secretOrKey: "some very complicated password",
+  secretOrKey: process.env.PASSPORT_SECRET_KEY,
 };
 
 const passportStrategy = new JwtStrategy(passportOptions, async function (

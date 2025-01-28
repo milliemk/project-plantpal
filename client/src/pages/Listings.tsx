@@ -10,14 +10,15 @@ import DMModal from "../components/DMModal";
 import SellerInfoModal from "../components/SellerInfoModal";
 import { AuthContext } from "../Context/AuthContext";
 import Loader from "../components/Loader";
+import PleaseLogInModal from "../components/PleaseLogInModal";
 
 function Listings() {
   const [listings, setListings] = useState<Listing[] | null>(null);
   const [deal, setDeal] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { user, checkUserStatus } = useContext(AuthContext);
+  const { user, checkUserStatus, isAuthenticated } = useContext(AuthContext);
 
   const getListingsBySearch = async (searchInput = "", deal = "") => {
     let url = `http://localhost:5001/api/listings?keyword=${searchInput}&deal=${deal}`;
@@ -91,6 +92,7 @@ function Listings() {
     setDeal(deal);
   };
 
+  //FAVOURITES
   const addToFavourites = async (listingId: string, action: string) => {
     const token = localStorage.getItem("token");
 
@@ -120,14 +122,13 @@ function Listings() {
       if (response.ok) {
         const result: Thread = await response.json();
         console.log("new favourite", result);
-        checkUserStatus();
+        checkUserStatus(true);
       }
     } catch (error) {
       console.log("error adding to favourites", error);
     }
   };
 
-  // Fetch all listings when the component mounts
   useEffect(() => {
     getListingsBySearch();
   }, []);
@@ -233,28 +234,32 @@ function Listings() {
                         </p>
                       ) : null}
                     </div>
-                    {listing.deal === "swap" ? (
-                      <h4 className="roboto-slab swap-title listing-title">
-                        <span className="material-symbols-outlined">
-                          repeat
-                        </span>{" "}
-                        {listing.species} for {listing.swapfor}
-                      </h4>
-                    ) : null}
-                    {listing.deal === "sale" ? (
-                      <h4 className="roboto-slab listing-title">
-                        <span className="material-symbols-outlined">sell</span>{" "}
-                        {listing.species} €{listing.price}
-                      </h4>
-                    ) : null}
-                    {listing.deal === "giveaway" ? (
-                      <h4 className="roboto-slab listing-title">
-                        <span className="material-symbols-outlined">
-                          featured_seasonal_and_gifts
-                        </span>{" "}
-                        {listing.species}
-                      </h4>
-                    ) : null}
+                    <Link to={listing._id}>
+                      {listing.deal === "swap" ? (
+                        <h4 className="roboto-slab swap-title listing-title">
+                          <span className="material-symbols-outlined">
+                            repeat
+                          </span>{" "}
+                          {listing.species} for {listing.swapfor}
+                        </h4>
+                      ) : null}
+                      {listing.deal === "sale" ? (
+                        <h4 className="roboto-slab listing-title">
+                          <span className="material-symbols-outlined">
+                            sell
+                          </span>{" "}
+                          {listing.species} €{listing.price}
+                        </h4>
+                      ) : null}
+                      {listing.deal === "giveaway" ? (
+                        <h4 className="roboto-slab listing-title">
+                          <span className="material-symbols-outlined">
+                            featured_seasonal_and_gifts
+                          </span>{" "}
+                          {listing.species}
+                        </h4>
+                      ) : null}
+                    </Link>
 
                     <div className="listing-body">
                       <SellerInfoModal seller={listing.seller} />
@@ -266,33 +271,41 @@ function Listings() {
                         water={listing.water}
                         soil={listing.soil}
                       />
-                      {user?.favourites.includes(listing._id) ? (
-                        <Button
-                          className="add-fav"
-                          onClick={() => addToFavourites(listing._id, "delete")}
-                        >
-                          <span className="material-symbols-outlined">
-                            close
-                          </span>
-                        </Button>
-                      ) : (
-                        <Button
-                          className="add-fav"
-                          onClick={() => addToFavourites(listing._id, "add")}
-                        >
-                          <span className="material-symbols-outlined">
-                            favorite
-                          </span>
-                        </Button>
-                      )}
+                      {isAuthenticated ? (
+                        user?.favourites
+                          ?.map((favourite) => favourite._id)
+                          .includes(listing._id) ? (
+                          <Button
+                            className="add-fav"
+                            onClick={() =>
+                              addToFavourites(listing._id, "delete")
+                            }
+                          >
+                            <span className="material-symbols-outlined">
+                              close
+                            </span>
+                          </Button>
+                        ) : (
+                          <Button
+                            className="add-fav"
+                            onClick={() => addToFavourites(listing._id, "add")}
+                          >
+                            <span className="material-symbols-outlined">
+                              favorite
+                            </span>
+                          </Button>
+                        )
+                      ) : null}
 
                       {user && listing.seller?._id === user.userId ? (
                         <span className="my-listing">My Plant</span>
-                      ) : (
+                      ) : isAuthenticated ? (
                         <DMModal
                           listingId={listing._id}
                           startThreadFnc={startNewThread}
                         />
+                      ) : (
+                        <PleaseLogInModal />
                       )}
                     </div>
                   </div>

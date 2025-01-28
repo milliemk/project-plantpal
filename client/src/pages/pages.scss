@@ -171,3 +171,53 @@
 .my-listing p {
   font-size: 30px;
 }
+
+.error-button {
+  background-color: rgb(146, 202, 202);
+  color: white;
+  border: 2px solid rgb(146, 202, 202);
+}
+
+.error-button:hover {
+  background-color: rgb(146, 202, 202);
+  color: white;
+  border: 2px solid rgb(146, 202, 202);
+}
+
+.image-container-details {
+  position: relative; /* Establishes a positioning context */
+  width: 100%; /* Match the width of the image */
+  height: 400px; /* Match the height of the image */
+}
+
+.details-image {
+  object-fit: cover;
+  object-position: center;
+  height: 100%; /* Full height of the container */
+  width: 100%; /* Full width of the container */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .profile-navbar {
+    gap: 3rem;
+    margin-top: 4.5rem;
+  }
+
+  .profile-navbar a {
+    font-family: "Gluten";
+    font-size: 18px;
+  }
+
+  .active {
+    color: rgb(184, 209, 123);
+    transform: scale(1.1);
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+}

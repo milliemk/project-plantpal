@@ -10,8 +10,7 @@ const generateToken = (userId) => {
     audience: "App users",
   };
 
-  //! CHANGE THIS TO AN ENV SECRET
-  const secretKey = "some very complicated password";
+  const secretKey = process.env.PASSPORT_SECRET_KEY;
 
   const token = jwt.sign(payload, secretKey, options);
   return token;

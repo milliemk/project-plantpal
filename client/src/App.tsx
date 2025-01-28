@@ -19,6 +19,8 @@ import Messages from "./pages/Messages";
 import Favourites from "./pages/Favourites";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MyPlants from "./pages/MyPlants";
+import ErrorPage from "./pages/Error";
+import ListingDetailsPage from "./pages/ListingDetailsPage";
 
 const Root = () => {
   return (
@@ -31,10 +33,11 @@ const Root = () => {
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Root />}>
+    <Route path="/" element={<Root />} errorElement={<ErrorPage />}>
       <Route index element={<Home />} />
       <Route path="newpost" element={<NewPost />} />
       <Route path="listings" element={<Listings />} />
+      <Route path="listings/:listingId" element={<ListingDetailsPage />} />
       <Route path="register" element={<Register />} />
       <Route path="login" element={<Login />} />
       <Route

@@ -11,8 +11,6 @@ function Messages() {
 
   const { user, checkUserStatus } = useContext(AuthContext);
 
-  // get threads
-
   const getThreads = async (userId = "") => {
     let url = `http://localhost:5001/api/threads?sellerId=${userId}&buyerId=${userId}`;
 
@@ -69,7 +67,7 @@ function Messages() {
   };
 
   useEffect(() => {
-    checkUserStatus();
+    checkUserStatus(false);
     if (user && user.userId) {
       getThreads(user.userId);
     }

@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Col, Form, Modal } from "react-bootstrap";
+import { Button, Col, Form } from "react-bootstrap";
 import * as formik from "formik";
 import * as yup from "yup";
 import NewPostModal from "../components/NewPostModal";
@@ -281,6 +281,7 @@ function NewPost() {
                       type="text"
                       placeholder="Swap for..."
                       name="swapfor"
+                      hidden={values.deal != "swap"}
                       value={values.swapfor}
                       onChange={handleChange}
                       isValid={touched.swapfor && !errors.swapfor}
@@ -293,6 +294,7 @@ function NewPost() {
                       type="number" // Change to 'number'
                       placeholder="Price.."
                       name="price"
+                      hidden={values.deal != "price"}
                       value={values.price} // Ensure the value is treated as a number
                       onChange={(e) =>
                         setFieldValue("price", Number(e.target.value))

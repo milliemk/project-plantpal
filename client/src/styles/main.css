@@ -258,6 +258,39 @@ p {
   }
 }
 
+.listing-box-detail {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  color: black;
+  width: 500px;
+  height: 650px;
+  border-radius: 20px;
+  text-align: left;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  & h4 {
+    color: rgb(71, 119, 119);
+    background-color: white;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 0.5rem;
+  }
+
+  & p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 1rem;
+    font-size: 14px;
+    padding-right: 0.5rem;
+  }
+}
+
 .listing-description {
   margin-top: 0.5rem;
   margin-bottom: 0;
@@ -296,12 +329,17 @@ p {
 }
 
 /* Profile Page */
+.profile-cont {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 .profile-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   margin-top: 3.5rem;
-  gap: 1rem;
 }
 
 .user-column {
@@ -356,7 +394,7 @@ p {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .thread-box {
@@ -426,4 +464,36 @@ p {
   background-color: rgb(146, 202, 202);
   border-radius: 10px;
   padding: 0.5rem;
+}
+
+/* phone view */
+
+@media only screen and (max-width: 768px) {
+  .profile-cont {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-container {
+    margin-top: 0;
+  }
+
+  .welcome-box {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    width: 454px;
+    height: 320px;
+  }
+
+  .listing-box-detail {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    width: 400px;
+    height: 700px;
+    margin-top: 2rem;
+  }
 }

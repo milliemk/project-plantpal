@@ -13,7 +13,6 @@ function MyPlants() {
   const { user } = useContext(AuthContext);
   const userId = user?.userId;
 
-  // get users listings
   const getUsersListings = async () => {
     let url = `http://localhost:5001/api/listings?sellerId=${userId}`;
 

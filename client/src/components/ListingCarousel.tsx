@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./components.scss";
-import { Button, Carousel } from "react-bootstrap";
+import { Carousel } from "react-bootstrap";
 
 interface CarouselProps {
   images: string[];

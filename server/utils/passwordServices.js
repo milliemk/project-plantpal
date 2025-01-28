@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 
+// Function to hash and encrypt a raw password
 const encryptPassword = async (rawPassword) => {
   try {
     const saltRounds = 10;
@@ -12,6 +13,7 @@ const encryptPassword = async (rawPassword) => {
   }
 };
 
+// Function to compare raw password with its hashed version
 const isPasswordCorrect = async (rawPassword, hashedPassword) => {
   const isPasswordMatched = await bcrypt.compare(rawPassword, hashedPassword);
 

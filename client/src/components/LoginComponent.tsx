@@ -8,21 +8,19 @@ import { useNavigate } from "react-router";
 function LoginComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const { login } = useContext(AuthContext);
 
-  //redirect after login
   const navigateTo = useNavigate();
   const redirectToProfilePage = () => {
-    navigateTo("/profile");
+    navigateTo("/profile/listings");
   };
 
-  //handle emailchange
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
-  //handle passwordchange
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
@@ -36,6 +34,8 @@ function LoginComponent() {
       redirectToProfilePage();
     } catch (error) {
       console.log("Error during login:", error);
+      const errorResponse = error as Error;
+      setErrorMsg(errorResponse.message);
     }
   };
 
@@ -45,6 +45,7 @@ function LoginComponent() {
         className="register-form poppins-regular"
         onSubmit={handleLoginClick}
       >
+        <p>{errorMsg}</p>
         <h3 className="register-title">Login</h3>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address:</Form.Label>

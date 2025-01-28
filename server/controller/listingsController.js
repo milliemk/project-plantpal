@@ -2,6 +2,30 @@ import ListingsModel from "../models/listingsModel.js";
 import UserModel from "../models/usersModel.js";
 import { pictureUpload } from "../utils/pictureUpload.js";
 
+// get listing by ID
+const getListingById = async (req, res) => {
+  const { listingId } = req.params;
+
+  if (!listingId) {
+    return res.status(404).json({ message: "Listing not found" });
+  }
+
+  // find the listing by ID
+  const listing = await ListingsModel.findById(listingId).populate(
+    "seller",
+    "username avatar postedListings createdAt"
+  );
+
+  if (!listing) {
+    return res.status(404).json({ message: "Listing not found" });
+  }
+
+  return res.status(200).json({
+    message: "Listing successfully retrieved.",
+    listing,
+  });
+};
+
 // get all listings with filter
 
 const getAllListings = async (request, response) => {
@@ -9,23 +33,6 @@ const getAllListings = async (request, response) => {
   const { deal } = request.query;
   const { sellerId } = request.query;
   const { listingId } = request.query;
-
-  // Check for a specific listing by its ID
-  /*   if (listingId) {
-    const listing = await ListingsModel.findById(listingId).populate(
-      "seller",
-      "username avatar postedListings"
-    );
-
-    if (!listing) {
-      return response.status(404).json({ message: "Listing not found." });
-    }
-
-    return response.status(200).json({
-      message: "Listing successfully retrieved.",
-      listing,
-    });
-  } */
 
   try {
     // where we will store the conditions for the search query
@@ -61,7 +68,7 @@ const getAllListings = async (request, response) => {
     // find all listings with this search criteria/pattern
     const listings = await ListingsModel.find(searchCriteria)
       .sort({ createdAt: -1 })
-      .populate("seller", "username avatar postedListings");
+      .populate("seller", "username avatar postedListings createdAt");
 
     return response.status(200).json({
       message: "Listings successfully retrieved.",
@@ -133,7 +140,7 @@ const postNewListing = async (request, response) => {
     // Use populate here to include full seller info in the listing response
     const populatedListing = await ListingsModel.findById(listing._id).populate(
       "seller",
-      "username avatar postedListings _id"
+      "username avatar postedListings _id createdAt"
     );
 
     return response.status(201).json({
@@ -148,4 +155,4 @@ const postNewListing = async (request, response) => {
   }
 };
 
-export { getAllListings, postNewListing };
+export { getAllListings, postNewListing, getListingById };

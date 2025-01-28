@@ -31,10 +31,7 @@ const userSchema = mongoose.Schema(
     postedListings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Listing" }],
   },
   {
-    timestamps: {
-      createdAt: "created_at",
-      updatedAt: "updated_at",
-    },
+    timestamps: true,
   }
 );
 
