@@ -5,6 +5,7 @@ import * as yup from "yup";
 import NewPostModal from "../components/NewPostModal";
 import { useState } from "react";
 import { Link } from "react-router";
+import { baseURL } from "../utils/baseUrl";
 
 function NewPost() {
   const [show, setShow] = useState(false);
@@ -62,7 +63,7 @@ function NewPost() {
 
     try {
       const response = await fetch(
-        "http://localhost:5001/api/listings/uploadListing",
+        `${baseURL}/api/listings/uploadListing`,
         requestOptions
       );
       console.log("response :>> ", response);

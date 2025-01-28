@@ -5,6 +5,7 @@ import SellerInfoModal from "../components/SellerInfoModal";
 import CareModal from "../components/CareModal";
 import ListingCarousel from "../components/ListingCarousel";
 import Loader from "../components/Loader";
+import { baseURL } from "../utils/baseUrl";
 
 function MyPlants() {
   const [listings, setListings] = useState<Listing[] | null>(null);
@@ -14,7 +15,7 @@ function MyPlants() {
   const userId = user?.userId;
 
   const getUsersListings = async () => {
-    let url = `http://localhost:5001/api/listings?sellerId=${userId}`;
+    let url = `${baseURL}/api/listings?sellerId=${userId}`;
 
     try {
       const response = await fetch(url);

@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { User } from "../types/customTypes";
+import { baseURL } from "../utils/baseUrl";
 
 type AuthContextProviderProps = {
   children: ReactNode;
@@ -44,7 +45,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     password: string
   ) => {
     try {
-      const response = await fetch("http://localhost:5001/api/user/register", {
+      const response = await fetch(`${baseURL}/api/user/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
@@ -65,7 +66,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch("http://localhost:5001/api/user/login", {
+      const response = await fetch(`${baseURL}/api/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -104,7 +105,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
         try {
           const response = await fetch(
-            "http://localhost:5001/api/user/profile",
+            `${baseURL}/api/user/profile`,
             requestOptions
           );
           if (!response.ok) {

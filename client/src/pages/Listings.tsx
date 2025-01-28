@@ -11,6 +11,7 @@ import SellerInfoModal from "../components/SellerInfoModal";
 import { AuthContext } from "../Context/AuthContext";
 import Loader from "../components/Loader";
 import PleaseLogInModal from "../components/PleaseLogInModal";
+import { baseURL } from "../utils/baseUrl";
 
 function Listings() {
   const [listings, setListings] = useState<Listing[] | null>(null);
@@ -21,7 +22,7 @@ function Listings() {
   const { user, checkUserStatus, isAuthenticated } = useContext(AuthContext);
 
   const getListingsBySearch = async (searchInput = "", deal = "") => {
-    let url = `http://localhost:5001/api/listings?keyword=${searchInput}&deal=${deal}`;
+    let url = `${baseURL}/api/listings?keyword=${searchInput}&deal=${deal}`;
 
     setIsLoading(true);
     try {
@@ -60,10 +61,7 @@ function Listings() {
     };
 
     try {
-      const response = await fetch(
-        `http://localhost:5001/api/threads/`,
-        requestOptions
-      );
+      const response = await fetch(`${baseURL}/api/threads/`, requestOptions);
 
       if (!response.ok) {
         throw new Error("Something went wrong when starting the thread");
@@ -112,7 +110,7 @@ function Listings() {
 
     try {
       const response = await fetch(
-        `http://localhost:5001/api/user/favourites`,
+        `${baseURL}/api/user/favourites`,
         requestOptions
       );
 

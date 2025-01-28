@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Listing } from "../types/customTypes";
 import { Link } from "react-router";
 import Loader from "../components/Loader";
+import { baseURL } from "../utils/baseUrl";
 
 type APIOKResponse = {
   listings: Listing[];
@@ -13,7 +14,7 @@ function Home() {
 
   const getListings = async () => {
     try {
-      const response = await fetch(`http://localhost:5001/api/listings`);
+      const response = await fetch(`${baseURL}/api/listings`);
 
       if (!response.ok) {
         throw new Error("Something went wrong");

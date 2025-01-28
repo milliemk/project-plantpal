@@ -5,13 +5,14 @@ import { Listing } from "../types/customTypes";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./pages.scss";
 import { useParams } from "react-router";
+import { baseURL } from "../utils/baseUrl";
 
 function ListingDetailsPage() {
   const { listingId } = useParams();
   const [listing, setListing] = useState<Listing | null>(null);
 
   const getListingById = async () => {
-    let url = `http://localhost:5001/api/listings/${listingId}`;
+    let url = `${baseURL}/api/listings/${listingId}`;
 
     try {
       const response = await fetch(url);

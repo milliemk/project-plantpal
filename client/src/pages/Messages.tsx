@@ -3,6 +3,7 @@ import { Thread } from "../types/customTypes";
 import { AuthContext } from "../Context/AuthContext";
 import AddNewMessage from "../components/AddNewMessage";
 import Loader from "../components/Loader";
+import { baseURL } from "../utils/baseUrl";
 
 function Messages() {
   const [newMessages, setNewMessages] = useState(false);
@@ -12,7 +13,7 @@ function Messages() {
   const { user, checkUserStatus } = useContext(AuthContext);
 
   const getThreads = async (userId = "") => {
-    let url = `http://localhost:5001/api/threads?sellerId=${userId}&buyerId=${userId}`;
+    let url = `${baseURL}/api/threads?sellerId=${userId}&buyerId=${userId}`;
 
     try {
       const response = await fetch(url);
@@ -48,7 +49,7 @@ function Messages() {
 
     try {
       const response = await fetch(
-        `http://localhost:5001/api/threads/${threadId}/messages`,
+        `${baseURL}/api/threads/${threadId}/messages`,
         requestOptions
       );
 

@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./pages.scss";
 import { Outlet, useLocation } from "react-router";
 import { Nav } from "react-bootstrap";
+import { baseURL } from "../utils/baseUrl";
 
 export default function Profile() {
   const [selectedFile, setSelectedFile] = useState<File | string>("");
@@ -43,7 +44,7 @@ export default function Profile() {
     };
     try {
       const response = await fetch(
-        "http://localhost:5001/api/user/avatarUpload",
+        `${baseURL}/api/user/avatarUpload`,
         requestOptions
       );
       if (!response.ok) {
