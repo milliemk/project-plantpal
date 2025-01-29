@@ -12,6 +12,7 @@ import { AuthContext } from "../Context/AuthContext";
 import Loader from "../components/Loader";
 import PleaseLogInModal from "../components/PleaseLogInModal";
 import { baseURL } from "../utils/baseUrl";
+import PleaseLogInModalNewPost from "../components/PleaseLogInModalNewPost";
 
 function Listings() {
   const [listings, setListings] = useState<Listing[] | null>(null);
@@ -138,9 +139,13 @@ function Listings() {
   return (
     <>
       <div className="d-flex flex-column align-items-center">
-        <Link to="/newpost">
-          <Button className="new-plant-button">Post new Plant</Button>
-        </Link>
+        {isAuthenticated ? (
+          <Link to="/newpost">
+            <Button className="new-plant-button">Post new Plant</Button>
+          </Link>
+        ) : (
+          <PleaseLogInModalNewPost />
+        )}
         <Form.Group className="filter-group">
           <Form.Select
             onChange={handleFilterByDeal}
