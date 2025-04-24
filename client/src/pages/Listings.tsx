@@ -217,21 +217,21 @@ function Listings() {
                       {listing.condition === "healthy" ? (
                         <p>
                           <span className="material-symbols-outlined">
-                            package_2
+                            sentiment_satisfied
                           </span>{" "}
                           Healthy
                         </p>
                       ) : listing.condition === "thriving" ? (
                         <p>
                           <span className="material-symbols-outlined">
-                            package_2
+                            sentiment_very_satisfied
                           </span>{" "}
                           Thriving
                         </p>
                       ) : listing.condition === "needslove" ? (
                         <p>
                           <span className="material-symbols-outlined">
-                            package_2
+                            heart_plus
                           </span>{" "}
                           Needs Love
                         </p>
